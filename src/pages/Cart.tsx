@@ -37,47 +37,57 @@ const Cart = () => {
     <div className="min-h-screen flex flex-col">
       <Navbar />
       
-      <main className="flex-1 py-10">
+      <main className="flex-1 py-10 bg-gray-50">
         <div className="container px-4 md:px-6">
-          <div className="flex items-center mb-8">
-            <Button variant="ghost" asChild className="mr-4">
-              <Link to="/courses">
-                <ArrowLeft className="h-4 w-4 mr-2" />
-                Continue Shopping
-              </Link>
-            </Button>
-            <h1 className="text-2xl font-bold">Your Cart</h1>
+          <div className="mb-8">
+            <h1 className="text-2xl font-bold text-center">Shopping Cart ({cart.totalItems})</h1>
+            <Separator className="my-4" />
           </div>
           
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            {/* Cart Items */}
             <div className="lg:col-span-2">
-              <div className="border rounded-lg">
-                <div className="p-6">
-                  <div className="flex items-center justify-between mb-4">
-                    <h2 className="font-semibold text-lg">
-                      {cart.totalItems} {cart.totalItems === 1 ? 'Course' : 'Courses'} in Cart
-                    </h2>
-                    <Button 
-                      variant="ghost" 
-                      size="sm" 
-                      onClick={clearCart}
-                      className="text-muted-foreground hover:text-red-600"
-                    >
-                      Clear All
-                    </Button>
-                  </div>
-                  
-                  <div className="divide-y">
-                    {cart.items.map((item) => (
-                      <CartItem key={item.course.id} item={item} />
-                    ))}
+              <div className="bg-white rounded-lg shadow-sm overflow-hidden">
+                <div className="px-6 py-4 bg-gray-50 border-b flex items-center justify-between">
+                  <h2 className="font-semibold">COURSE</h2>
+                  <div className="flex space-x-16">
+                    <span className="font-semibold">PRICE</span>
+                    <span className="font-semibold">ACTION</span>
                   </div>
                 </div>
+                
+                <div className="divide-y p-4 space-y-2">
+                  {cart.items.map((item) => (
+                    <CartItem key={item.course.id} item={item} />
+                  ))}
+                </div>
+              </div>
+              
+              <div className="mt-4 flex justify-between items-center">
+                <Button 
+                  variant="ghost" 
+                  asChild
+                  className="text-primary"
+                >
+                  <Link to="/courses">
+                    <ArrowLeft className="h-4 w-4 mr-2" />
+                    Continue Shopping
+                  </Link>
+                </Button>
+                
+                <Button 
+                  variant="ghost" 
+                  onClick={clearCart}
+                  className="text-muted-foreground hover:text-red-600"
+                >
+                  Clear All
+                </Button>
               </div>
             </div>
             
+            {/* Order Summary */}
             <div>
-              <div className="border rounded-lg p-6">
+              <div className="bg-white rounded-lg shadow-sm p-6 sticky top-20">
                 <h2 className="font-semibold text-lg mb-4">Order Summary</h2>
                 
                 <div className="space-y-3">
@@ -87,7 +97,7 @@ const Cart = () => {
                   </div>
                   <div className="flex items-center justify-between">
                     <span className="text-muted-foreground">Discounts:</span>
-                    <span>
+                    <span className="text-green-600">
                       -${(
                         cart.items.reduce((total, item) => total + item.course.price, 0) - 
                         cart.items.reduce((total, item) => 
@@ -100,15 +110,27 @@ const Cart = () => {
                   
                   <div className="flex items-center justify-between font-semibold text-lg">
                     <span>Total:</span>
-                    <span>${cart.totalPrice.toFixed(2)}</span>
+                    <span>${cart.totalPrice.toFixed(2)} USD</span>
                   </div>
                   
-                  <Button className="w-full mt-4" size="lg" asChild>
+                  <Button className="w-full mt-6 bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700" size="lg" asChild>
                     <Link to="/checkout">
-                      <CreditCard className="h-5 w-5 mr-2" />
-                      Checkout
+                      Proceed To Checkout
                     </Link>
                   </Button>
+                  
+                  <div className="mt-4">
+                    <div className="relative">
+                      <input
+                        type="text"
+                        placeholder="Enter coupon code"
+                        className="w-full border rounded-l-lg py-2 px-3 focus:outline-none focus:ring-2 focus:ring-primary"
+                      />
+                      <Button className="absolute right-0 top-0 h-full rounded-l-none">
+                        Apply
+                      </Button>
+                    </div>
+                  </div>
                   
                   <div className="mt-4 text-xs text-center text-muted-foreground">
                     <p>Secure Checkout</p>

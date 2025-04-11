@@ -16,6 +16,7 @@ import {
 import { cn } from '@/lib/utils';
 import coursesData, { Lesson } from '@/data/coursesData';
 import { useCart } from '@/context/CartContext';
+import CourseContentSidebar from '@/components/CourseContentSidebar';
 
 const CourseContent = () => {
   const { id } = useParams<{ id: string }>();
@@ -75,6 +76,9 @@ const CourseContent = () => {
     setSidebarOpen(false);
   };
   
+  // Calculate mock progress (in a real app, this would come from user data)
+  const progress = Math.round((currentLessonIndex / (course.lessons.length - 1)) * 100);
+  
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
@@ -90,15 +94,15 @@ const CourseContent = () => {
           {sidebarOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
         </Button>
         
-        {/* Sidebar */}
+        {/* Course Content Sidebar */}
         <div 
           className={cn(
-            "fixed inset-y-0 left-0 z-40 w-72 bg-background border-r transform transition-transform duration-200 ease-in-out md:relative md:translate-x-0",
+            "fixed inset-y-0 left-0 z-40 w-72 transform transition-transform duration-200 ease-in-out md:relative md:translate-x-0",
             sidebarOpen ? "translate-x-0" : "-translate-x-full"
           )}
         >
-          <div className="p-4 border-b sticky top-0 bg-background z-10">
-            <div className="flex items-center justify-between">
+          <div className="h-full flex flex-col">
+            <div className="p-4 border-b flex items-center justify-between">
               <Link to="/my-courses" className="text-primary hover:text-primary/80 flex items-center">
                 <Home className="h-4 w-4 mr-2" />
                 <span className="text-sm">My Courses</span>
@@ -112,47 +116,20 @@ const CourseContent = () => {
                 <X className="h-5 w-5" />
               </Button>
             </div>
-            <h2 className="font-semibold mt-2 line-clamp-2">{course.title}</h2>
-          </div>
-          
-          <div className="p-4">
-            <h3 className="font-medium text-sm mb-2">Course Content</h3>
-            <div className="text-xs text-muted-foreground mb-4">
-              {course.lessons.length} lessons • {course.duration} total
-            </div>
             
-            <div className="space-y-1">
-              {course.lessons.map((lesson, index) => (
-                <button
-                  key={lesson.id}
-                  onClick={() => selectLesson(index)}
-                  className={cn(
-                    "w-full text-left p-2 rounded-md text-sm flex items-start",
-                    currentLessonIndex === index 
-                      ? "bg-primary/10 text-primary font-medium" 
-                      : "hover:bg-secondary"
-                  )}
-                >
-                  <div className="mr-3 mt-0.5">
-                    {currentLessonIndex === index ? (
-                      <PlayCircle className="h-4 w-4 text-primary" />
-                    ) : (
-                      <CheckCircle2 className="h-4 w-4 text-muted-foreground" />
-                    )}
-                  </div>
-                  <div>
-                    <div className="font-medium line-clamp-2">{lesson.title}</div>
-                    <div className="text-xs text-muted-foreground mt-1">{lesson.duration}</div>
-                  </div>
-                </button>
-              ))}
-            </div>
+            <CourseContentSidebar 
+              title={course.title}
+              lessons={course.lessons}
+              currentLessonIndex={currentLessonIndex}
+              onSelectLesson={selectLesson}
+              progress={progress}
+            />
           </div>
         </div>
         
         {/* Main Content */}
-        <div className="flex-1 overflow-auto p-4 md:p-8">
-          <div className="max-w-3xl mx-auto">
+        <div className="flex-1 overflow-auto p-4 md:p-8 bg-gray-50">
+          <div className="max-w-3xl mx-auto bg-white rounded-lg shadow-sm p-6">
             <div className="mb-6">
               <h1 className="text-2xl font-bold mb-2">{currentLesson.title}</h1>
               <div className="flex items-center text-sm text-muted-foreground">
@@ -161,21 +138,30 @@ const CourseContent = () => {
               </div>
             </div>
             
-            <div className="mb-8 bg-gray-100 rounded-lg aspect-video flex items-center justify-center">
-              <div className="text-center p-8">
-                <PlayCircle className="h-16 w-16 text-primary/80 mx-auto mb-4" />
-                <p className="text-muted-foreground">Video content would appear here in a real application</p>
+            <div className="mb-8 bg-gray-100 rounded-lg aspect-video flex items-center justify-center relative overflow-hidden">
+              <img
+                src={course.image}
+                alt={course.title}
+                className="w-full h-full object-cover opacity-20"
+              />
+              <div className="absolute inset-0 flex items-center justify-center">
+                <div className="text-center p-8">
+                  <div className="bg-white/90 p-6 rounded-lg shadow-lg">
+                    <PlayCircle className="h-16 w-16 text-primary mx-auto mb-4" />
+                    <p className="text-muted-foreground">Video content would appear here in a real application</p>
+                  </div>
+                </div>
               </div>
             </div>
             
             <div className="prose max-w-none mb-8">
               <p>{currentLesson.content}</p>
-              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam euismod, nisl eget aliquam ultricies, nunc nisl aliquet nunc, quis aliquam nisl nisl vitae nisl. Nullam euismod, nisl eget aliquam ultricies.</p>
+              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam euismod, nisl eget aliquam ultricies, nunc nisl aliquet nunc, quis aliquam nisl nisl vitae nisl.</p>
               <p>Some key points from this lesson:</p>
               <ul>
                 <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</li>
                 <li>Nullam euismod, nisl eget aliquam ultricies, nunc nisl aliquet nunc.</li>
-                <li>Quis aliquam nisl nisl vitae nisl. Nullam euismod, nisl eget aliquam ultricies.</li>
+                <li>Quis aliquam nisl nisl vitae nisl. Nullam euismod, nisl eget aliquam.</li>
               </ul>
               <blockquote>
                 "The best way to learn is by doing. Practice makes perfect." - Programming wisdom
