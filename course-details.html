@@ -1,0 +1,1121 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Course Details - EdTech Platform</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="additional-styles.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <style>
+    /* Course details specific styles */
+    .course-detail-page {
+      min-height: calc(100vh - 4rem - 3rem);
+    }
+    
+    .course-header {
+      background: linear-gradient(to right, #3b82f6, #4f46e5);
+      padding: 4rem 0;
+      color: white;
+    }
+    
+    .course-header-content {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+    
+    @media (min-width: 1024px) {
+      .course-header-content {
+        grid-template-columns: 2fr 1fr;
+      }
+    }
+    
+    .course-title {
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+    }
+    
+    .course-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+    
+    .course-meta-item {
+      display: flex;
+      align-items: center;
+      font-size: 0.875rem;
+    }
+    
+    .course-meta-item i {
+      margin-right: 0.25rem;
+    }
+    
+    .course-badge {
+      display: inline-flex;
+      align-items: center;
+      background-color: rgba(255, 255, 255, 0.2);
+      border-radius: 9999px;
+      padding: 0.25rem 0.75rem;
+      font-size: 0.75rem;
+      font-weight: 500;
+      margin-right: 0.5rem;
+      margin-bottom: 0.5rem;
+    }
+    
+    .course-card {
+      background-color: white;
+      border-radius: 0.5rem;
+      overflow: hidden;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    }
+    
+    .course-preview {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      object-fit: cover;
+    }
+    
+    .course-card-content {
+      padding: 1.5rem;
+    }
+    
+    .course-price {
+      margin-bottom: 1rem;
+    }
+    
+    .current-price {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--card-foreground);
+    }
+    
+    .original-price {
+      font-size: 1rem;
+      text-decoration: line-through;
+      color: var(--muted-foreground);
+      margin-left: 0.5rem;
+    }
+    
+    .discount-badge {
+      display: inline-flex;
+      background-color: #10b981;
+      color: white;
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 0.25rem 0.5rem;
+      border-radius: 0.25rem;
+      margin-left: 0.5rem;
+    }
+    
+    .countdown {
+      background-color: var(--muted);
+      border-radius: 0.25rem;
+      padding: 0.5rem;
+      margin-bottom: 1rem;
+      font-size: 0.875rem;
+      text-align: center;
+      font-weight: 500;
+    }
+    
+    .course-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+    
+    .course-includes {
+      margin-top: 1.5rem;
+    }
+    
+    .course-includes-title {
+      font-size: 0.875rem;
+      font-weight: 600;
+      margin-bottom: 0.75rem;
+    }
+    
+    .course-includes-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    
+    .course-includes-item {
+      display: flex;
+      align-items: center;
+      font-size: 0.875rem;
+      margin-bottom: 0.5rem;
+    }
+    
+    .course-includes-item i {
+      margin-right: 0.5rem;
+      color: var(--muted-foreground);
+    }
+    
+    .course-tabs {
+      margin-top: 2rem;
+      border-bottom: 1px solid var(--border);
+    }
+    
+    .tabs-list {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    
+    .tab-item {
+      position: relative;
+      padding: 1rem 0;
+      cursor: pointer;
+      font-weight: 500;
+      color: var(--muted-foreground);
+      transition: color 0.2s ease;
+    }
+    
+    .tab-item.active {
+      color: var(--primary);
+    }
+    
+    .tab-item.active::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background-color: var(--primary);
+    }
+    
+    .tab-content {
+      padding: 2rem 0;
+    }
+    
+    .tab-panel {
+      display: none;
+    }
+    
+    .tab-panel.active {
+      display: block;
+    }
+    
+    .section-title {
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+    }
+    
+    .curriculum-list {
+      border: 1px solid var(--border);
+      border-radius: 0.5rem;
+      overflow: hidden;
+    }
+    
+    .curriculum-section {
+      border-bottom: 1px solid var(--border);
+    }
+    
+    .curriculum-section:last-child {
+      border-bottom: none;
+    }
+    
+    .curriculum-section-header {
+      padding: 1rem;
+      background-color: var(--muted);
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .curriculum-lectures {
+      display: none;
+    }
+    
+    .curriculum-section.open .curriculum-lectures {
+      display: block;
+    }
+    
+    .lecture-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem;
+      border-top: 1px solid var(--border);
+    }
+    
+    .lecture-details {
+      display: flex;
+      align-items: center;
+    }
+    
+    .lecture-icon {
+      margin-right: 0.5rem;
+    }
+    
+    .instructor-card {
+      display: flex;
+      gap: 1.5rem;
+      padding: 1.5rem;
+      border: 1px solid var(--border);
+      border-radius: 0.5rem;
+      margin-bottom: 1rem;
+    }
+    
+    .instructor-avatar {
+      width: 5rem;
+      height: 5rem;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+    
+    .instructor-info {
+      flex: 1;
+    }
+    
+    .instructor-name {
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+    
+    .instructor-title {
+      font-size: 0.875rem;
+      color: var(--muted-foreground);
+      margin-bottom: 1rem;
+    }
+    
+    .instructor-stats {
+      display: flex;
+      gap: 1.5rem;
+      margin-bottom: 1rem;
+    }
+    
+    .instructor-stat {
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .stat-value {
+      font-weight: 600;
+    }
+    
+    .stat-label {
+      font-size: 0.75rem;
+      color: var(--muted-foreground);
+    }
+    
+    .review-card {
+      border: 1px solid var(--border);
+      border-radius: 0.5rem;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+    
+    .review-header {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 1rem;
+    }
+    
+    .reviewer {
+      display: flex;
+      align-items: center;
+    }
+    
+    .reviewer-avatar {
+      width: 2.5rem;
+      height: 2.5rem;
+      border-radius: 50%;
+      margin-right: 0.75rem;
+    }
+    
+    .reviewer-info {
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .reviewer-name {
+      font-weight: 500;
+    }
+    
+    .review-date {
+      font-size: 0.75rem;
+      color: var(--muted-foreground);
+    }
+    
+    .review-rating {
+      display: flex;
+      align-items: center;
+    }
+    
+    .review-content {
+      line-height: 1.6;
+    }
+    
+    .learn-list, .requirements-list {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 0.75rem;
+      margin-bottom: 2rem;
+    }
+    
+    @media (min-width: 768px) {
+      .learn-list, .requirements-list {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+    
+    .learn-item, .requirement-item {
+      display: flex;
+      align-items: flex-start;
+    }
+    
+    .learn-item i, .requirement-item i {
+      margin-right: 0.5rem;
+      margin-top: 0.25rem;
+      flex-shrink: 0;
+    }
+  </style>
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="container navbar-content">
+      <a href="index.html" class="logo">
+        <i data-lucide="graduation-cap" class="logo-icon"></i>
+        <span>EdTech</span>
+      </a>
+      <div class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="courses.html" class="active">Courses</a>
+        <a href="#">About</a>
+        <a href="#">Contact</a>
+      </div>
+      <div class="navbar-actions">
+        <a href="cart.html" class="cart-icon">
+          <i data-lucide="shopping-cart"></i>
+          <span class="cart-badge" id="cartBadge">0</span>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="course-detail-page">
+    <!-- Course Header -->
+    <div class="course-header">
+      <div class="container">
+        <div class="course-header-content">
+          <div>
+            <div class="course-badge">
+              <span class="course-category">Web Development</span>
+            </div>
+            <h1 class="course-title">Complete Web Development Bootcamp</h1>
+            <p class="course-description">Learn HTML, CSS, JavaScript, React, Node.js and more. This comprehensive course takes you from beginner to professional web developer.</p>
+            
+            <div class="course-meta">
+              <div class="course-meta-item">
+                <i data-lucide="star" class="star-icon"></i>
+                <span class="course-rating">4.8</span>
+                <span class="review-count">(4,253 reviews)</span>
+              </div>
+              <div class="course-meta-item">
+                <i data-lucide="users"></i>
+                <span>12,345 students</span>
+              </div>
+              <div class="course-meta-item">
+                <i data-lucide="clock"></i>
+                <span class="course-duration">42h 30m</span>
+              </div>
+              <div class="course-meta-item">
+                <i data-lucide="bar-chart"></i>
+                <span class="course-level">Beginner</span>
+              </div>
+              <div class="course-meta-item">
+                <i data-lucide="calendar"></i>
+                <span>Last updated: March 2025</span>
+              </div>
+            </div>
+            
+            <div class="course-instructor-brief">
+              <span>Created by </span>
+              <a href="#instructor" class="instructor-link">Dr. Jennifer Lee</a>
+            </div>
+          </div>
+          
+          <!-- Course Card (Mobile & Desktop) -->
+          <div class="course-card">
+            <img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?q=80&w=600&auto=format&fit=crop" class="course-preview" alt="Course Preview">
+            <div class="course-card-content">
+              <div class="course-price">
+                <span class="current-price">$49.99</span>
+                <span class="original-price">$99.99</span>
+                <span class="discount-badge">72% off</span>
+              </div>
+              
+              <div class="countdown">
+                <i data-lucide="alarm-clock"></i>
+                <span>Sale ends in 2 days, 10:45:32</span>
+              </div>
+              
+              <div class="course-actions">
+                <button id="addToCartBtn" class="btn btn-primary">
+                  <i data-lucide="shopping-cart"></i>
+                  Add to Cart
+                </button>
+                <button class="btn btn-outline">
+                  <i data-lucide="heart"></i>
+                  Wishlist
+                </button>
+              </div>
+              
+              <div class="course-includes">
+                <div class="course-includes-title">This course includes:</div>
+                <ul class="course-includes-list">
+                  <li class="course-includes-item">
+                    <i data-lucide="video"></i>
+                    <span>42.5 hours on-demand video</span>
+                  </li>
+                  <li class="course-includes-item">
+                    <i data-lucide="file-text"></i>
+                    <span>25 articles</span>
+                  </li>
+                  <li class="course-includes-item">
+                    <i data-lucide="download"></i>
+                    <span>85 downloadable resources</span>
+                  </li>
+                  <li class="course-includes-item">
+                    <i data-lucide="infinity"></i>
+                    <span>Full lifetime access</span>
+                  </li>
+                  <li class="course-includes-item">
+                    <i data-lucide="smartphone"></i>
+                    <span>Access on mobile and TV</span>
+                  </li>
+                  <li class="course-includes-item">
+                    <i data-lucide="award"></i>
+                    <span>Certificate of completion</span>
+                  </li>
+                </ul>
+              </div>
+              
+              <div class="course-actions" style="margin-top: 1rem;">
+                <button class="btn btn-ghost">
+                  <i data-lucide="share-2"></i>
+                  Share
+                </button>
+                <button class="btn btn-ghost">
+                  <i data-lucide="gift"></i>
+                  Gift this course
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Course Content -->
+    <div class="container" style="padding-top: 2rem; padding-bottom: 4rem;">
+      <!-- Tabs Navigation -->
+      <div class="course-tabs">
+        <ul class="tabs-list">
+          <li class="tab-item active" data-tab="overview">Overview</li>
+          <li class="tab-item" data-tab="curriculum">Curriculum</li>
+          <li class="tab-item" data-tab="instructor">Instructor</li>
+          <li class="tab-item" data-tab="reviews">Reviews</li>
+        </ul>
+      </div>
+      
+      <!-- Tab Content -->
+      <div class="tab-content">
+        <!-- Overview Tab -->
+        <div class="tab-panel active" id="overview-tab">
+          <h2 class="section-title">What you'll learn</h2>
+          <div class="learn-list">
+            <div class="learn-item">
+              <i data-lucide="check-circle" class="text-primary"></i>
+              <span>Build responsive, accessible, and beautiful websites with HTML5 and CSS3</span>
+            </div>
+            <div class="learn-item">
+              <i data-lucide="check-circle" class="text-primary"></i>
+              <span>Master JavaScript including ES6+ syntax, asynchronous JavaScript, and DOM manipulation</span>
+            </div>
+            <div class="learn-item">
+              <i data-lucide="check-circle" class="text-primary"></i>
+              <span>Learn React, Redux, and build modern single-page applications</span>
+            </div>
+            <div class="learn-item">
+              <i data-lucide="check-circle" class="text-primary"></i>
+              <span>Understand backend development with Node.js, Express, and MongoDB</span>
+            </div>
+            <div class="learn-item">
+              <i data-lucide="check-circle" class="text-primary"></i>
+              <span>Implement authentication, API integration, and deployment workflows</span>
+            </div>
+            <div class="learn-item">
+              <i data-lucide="check-circle" class="text-primary"></i>
+              <span>Build real-world projects for your portfolio</span>
+            </div>
+          </div>
+          
+          <h2 class="section-title">Requirements</h2>
+          <div class="requirements-list">
+            <div class="requirement-item">
+              <i data-lucide="circle" class="text-muted-foreground"></i>
+              <span>No prior programming knowledge needed - we'll teach you everything from scratch</span>
+            </div>
+            <div class="requirement-item">
+              <i data-lucide="circle" class="text-muted-foreground"></i>
+              <span>A computer with internet access (Windows, Mac, or Linux)</span>
+            </div>
+            <div class="requirement-item">
+              <i data-lucide="circle" class="text-muted-foreground"></i>
+              <span>Desire to learn and practice coding regularly</span>
+            </div>
+          </div>
+          
+          <h2 class="section-title">Description</h2>
+          <div class="course-description-full">
+            <p>Welcome to the Complete Web Development Bootcamp, the only course you need to learn web development. With over 12,000 ratings and a 4.8 average, this is one of the highest-rated web development courses available.</p>
+            
+            <p>This comprehensive course is regularly updated with the latest frameworks and technologies. By the end of this course, you'll be able to:</p>
+            
+            <ul>
+              <li>Build responsive, accessible, and beautiful websites with HTML5 and CSS3</li>
+              <li>Master JavaScript including ES6+ features, asynchronous programming, and DOM manipulation</li>
+              <li>Learn React, Redux, and build modern single-page applications</li>
+              <li>Understand backend development with Node.js, Express, and MongoDB</li>
+              <li>Implement user authentication, API integration, and real-world deployment workflows</li>
+              <li>Build real-world projects that you can showcase in your portfolio</li>
+            </ul>
+            
+            <p>The course is designed for both complete beginners and those with some programming experience. We start with the basics and gradually move to more complex topics, ensuring you have a solid foundation in web development.</p>
+            
+            <p>Each section includes practical exercises and projects that reinforce what you've learned. You'll have access to starter files, completed projects, and helpful resources to support your learning journey.</p>
+            
+            <p>Join thousands of successful students who have taken this course and launched their career in web development!</p>
+          </div>
+          
+          <h2 class="section-title">Who this course is for</h2>
+          <div class="requirements-list">
+            <div class="requirement-item">
+              <i data-lucide="circle" class="text-muted-foreground"></i>
+              <span>Complete beginners with no previous programming experience</span>
+            </div>
+            <div class="requirement-item">
+              <i data-lucide="circle" class="text-muted-foreground"></i>
+              <span>Programmers who want to expand their skill set to become full-stack developers</span>
+            </div>
+            <div class="requirement-item">
+              <i data-lucide="circle" class="text-muted-foreground"></i>
+              <span>Anyone looking to build their own websites or web applications</span>
+            </div>
+            <div class="requirement-item">
+              <i data-lucide="circle" class="text-muted-foreground"></i>
+              <span>Students preparing for web development careers or freelancing</span>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Curriculum Tab -->
+        <div class="tab-panel" id="curriculum-tab">
+          <div class="curriculum-header">
+            <h2 class="section-title">Course Content</h2>
+            <p><span id="sectionCount">12</span> sections • <span id="lectureCount">135</span> lectures • <span>42h 30m</span> total length</p>
+          </div>
+          
+          <div class="curriculum-list">
+            <!-- Section 1 -->
+            <div class="curriculum-section">
+              <div class="curriculum-section-header">
+                <span>Introduction to Web Development</span>
+                <i data-lucide="chevron-down"></i>
+              </div>
+              <div class="curriculum-lectures">
+                <div class="lecture-item">
+                  <div class="lecture-details">
+                    <i data-lucide="play-circle" class="lecture-icon"></i>
+                    <span>Welcome to the Course</span>
+                  </div>
+                  <span>5:22</span>
+                </div>
+                <div class="lecture-item">
+                  <div class="lecture-details">
+                    <i data-lucide="play-circle" class="lecture-icon"></i>
+                    <span>How the Internet Works</span>
+                  </div>
+                  <span>12:45</span>
+                </div>
+                <div class="lecture-item">
+                  <div class="lecture-details">
+                    <i data-lucide="file-text" class="lecture-icon"></i>
+                    <span>Setting Up Your Development Environment</span>
+                  </div>
+                  <span>18:30</span>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Section 2 -->
+            <div class="curriculum-section">
+              <div class="curriculum-section-header">
+                <span>HTML Fundamentals</span>
+                <i data-lucide="chevron-down"></i>
+              </div>
+              <div class="curriculum-lectures">
+                <div class="lecture-item">
+                  <div class="lecture-details">
+                    <i data-lucide="play-circle" class="lecture-icon"></i>
+                    <span>Introduction to HTML</span>
+                  </div>
+                  <span>15:45</span>
+                </div>
+                <div class="lecture-item">
+                  <div class="lecture-details">
+                    <i data-lucide="play-circle" class="lecture-icon"></i>
+                    <span>HTML Document Structure</span>
+                  </div>
+                  <span>22:18</span>
+                </div>
+                <div class="lecture-item">
+                  <div class="lecture-details">
+                    <i data-lucide="file-text" class="lecture-icon"></i>
+                    <span>Working with Text Elements</span>
+                  </div>
+                  <span>19:52</span>
+                </div>
+                <div class="lecture-item">
+                  <div class="lecture-details">
+                    <i data-lucide="file-text" class="lecture-icon"></i>
+                    <span>Lists, Links and Images</span>
+                  </div>
+                  <span>25:10</span>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Section 3 -->
+            <div class="curriculum-section">
+              <div class="curriculum-section-header">
+                <span>CSS Styling</span>
+                <i data-lucide="chevron-down"></i>
+              </div>
+              <div class="curriculum-lectures">
+                <div class="lecture-item">
+                  <div class="lecture-details">
+                    <i data-lucide="play-circle" class="lecture-icon"></i>
+                    <span>Introduction to CSS</span>
+                  </div>
+                  <span>18:33</span>
+                </div>
+                <div class="lecture-item">
+                  <div class="lecture-details">
+                    <i data-lucide="play-circle" class="lecture-icon"></i>
+                    <span>Selectors and Specificity</span>
+                  </div>
+                  <span>24:15</span>
+                </div>
+                <div class="lecture-item">
+                  <div class="lecture-details">
+                    <i data-lucide="file-text" class="lecture-icon"></i>
+                    <span>Box Model and Layout</span>
+                  </div>
+                  <span>28:42</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Instructor Tab -->
+        <div class="tab-panel" id="instructor-tab">
+          <h2 class="section-title">Instructor</h2>
+          
+          <div class="instructor-card">
+            <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=600&auto=format&fit=crop" class="instructor-avatar" alt="Dr. Jennifer Lee">
+            <div class="instructor-info">
+              <h3 class="instructor-name">Dr. Jennifer Lee</h3>
+              <p class="instructor-title">Web Developer & Computer Science Professor</p>
+              
+              <div class="instructor-stats">
+                <div class="instructor-stat">
+                  <span class="stat-value">4.8</span>
+                  <span class="stat-label">Instructor Rating</span>
+                </div>
+                <div class="instructor-stat">
+                  <span class="stat-value">15,432</span>
+                  <span class="stat-label">Reviews</span>
+                </div>
+                <div class="instructor-stat">
+                  <span class="stat-value">128,350</span>
+                  <span class="stat-label">Students</span>
+                </div>
+                <div class="instructor-stat">
+                  <span class="stat-value">12</span>
+                  <span class="stat-label">Courses</span>
+                </div>
+              </div>
+              
+              <p class="instructor-bio">Dr. Jennifer Lee is a Computer Science professor with over 15 years of industry experience. She has worked at major tech companies including Google and Microsoft before dedicating herself to teaching full-time.</p>
+              <p>Her teaching methodology focuses on practical, real-world applications, ensuring students not only understand concepts theoretically but can apply them in professional settings.</p>
+              <p>Jennifer has taught over 100,000 students worldwide through her online courses and university lectures. She holds a Ph.D. in Computer Science from MIT and continues to consult with tech startups on web development best practices.</p>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Reviews Tab -->
+        <div class="tab-panel" id="reviews-tab">
+          <h2 class="section-title">Student Reviews</h2>
+          
+          <div class="reviews-summary" style="margin-bottom: 2rem;">
+            <div style="display: flex; gap: 2rem; align-items: center;">
+              <div style="text-align: center;">
+                <div style="font-size: 4rem; font-weight: 700; line-height: 1;">4.8</div>
+                <div class="review-rating" style="justify-content: center; margin: 0.5rem 0;">
+                  <i data-lucide="star" class="star-icon fill-yellow-400"></i>
+                  <i data-lucide="star" class="star-icon fill-yellow-400"></i>
+                  <i data-lucide="star" class="star-icon fill-yellow-400"></i>
+                  <i data-lucide="star" class="star-icon fill-yellow-400"></i>
+                  <i data-lucide="star" class="star-icon fill-gray-200"></i>
+                </div>
+                <div style="font-size: 0.875rem; color: var(--muted-foreground);">Course Rating</div>
+              </div>
+              
+              <div style="flex: 1;">
+                <div style="display: flex; align-items: center; margin-bottom: 0.5rem;">
+                  <div style="width: 100px;">5 stars</div>
+                  <div style="flex: 1; height: 8px; background-color: var(--muted); border-radius: 9999px; overflow: hidden;">
+                    <div style="width: 78%; height: 100%; background-color: var(--primary);"></div>
+                  </div>
+                  <div style="width: 50px; text-align: right;">78%</div>
+                </div>
+                <div style="display: flex; align-items: center; margin-bottom: 0.5rem;">
+                  <div style="width: 100px;">4 stars</div>
+                  <div style="flex: 1; height: 8px; background-color: var(--muted); border-radius: 9999px; overflow: hidden;">
+                    <div style="width: 15%; height: 100%; background-color: var(--primary);"></div>
+                  </div>
+                  <div style="width: 50px; text-align: right;">15%</div>
+                </div>
+                <div style="display: flex; align-items: center; margin-bottom: 0.5rem;">
+                  <div style="width: 100px;">3 stars</div>
+                  <div style="flex: 1; height: 8px; background-color: var(--muted); border-radius: 9999px; overflow: hidden;">
+                    <div style="width: 5%; height: 100%; background-color: var(--primary);"></div>
+                  </div>
+                  <div style="width: 50px; text-align: right;">5%</div>
+                </div>
+                <div style="display: flex; align-items: center; margin-bottom: 0.5rem;">
+                  <div style="width: 100px;">2 stars</div>
+                  <div style="flex: 1; height: 8px; background-color: var(--muted); border-radius: 9999px; overflow: hidden;">
+                    <div style="width: 1%; height: 100%; background-color: var(--primary);"></div>
+                  </div>
+                  <div style="width: 50px; text-align: right;">1%</div>
+                </div>
+                <div style="display: flex; align-items: center; margin-bottom: 0.5rem;">
+                  <div style="width: 100px;">1 star</div>
+                  <div style="flex: 1; height: 8px; background-color: var(--muted); border-radius: 9999px; overflow: hidden;">
+                    <div style="width: 1%; height: 100%; background-color: var(--primary);"></div>
+                  </div>
+                  <div style="width: 50px; text-align: right;">1%</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Individual Reviews -->
+          <div class="reviews-list">
+            <div class="review-card">
+              <div class="review-header">
+                <div class="reviewer">
+                  <img src="https://randomuser.me/api/portraits/men/32.jpg" class="reviewer-avatar" alt="Michael Johnson">
+                  <div class="reviewer-info">
+                    <div class="reviewer-name">Michael Johnson</div>
+                    <div class="review-date">2 weeks ago</div>
+                  </div>
+                </div>
+                <div class="review-rating">
+                  <i data-lucide="star" class="star-icon fill-yellow-400"></i>
+                  <i data-lucide="star" class="star-icon fill-yellow-400"></i>
+                  <i data-lucide="star" class="star-icon fill-yellow-400"></i>
+                  <i data-lucide="star" class="star-icon fill-yellow-400"></i>
+                  <i data-lucide="star" class="star-icon fill-yellow-400"></i>
+                </div>
+              </div>
+              <div class="review-content">
+                <p>This course is absolutely amazing! I had zero coding experience before starting, and now I've built three fully functional websites. Dr. Lee explains complex concepts in a way that's easy to understand. The projects are relevant and practical. I landed a junior developer job just two months after completing this course. Worth every penny!</p>
+              </div>
+            </div>
+            
+            <div class="review-card">
+              <div class="review-header">
+                <div class="reviewer">
+                  <img src="https://randomuser.me/api/portraits/women/44.jpg" class="reviewer-avatar" alt="Sarah Williams">
+                  <div class="reviewer-info">
+                    <div class="reviewer-name">Sarah Williams</div>
+                    <div class="review-date">1 month ago</div>
+                  </div>
+                </div>
+                <div class="review-rating">
+                  <i data-lucide="star" class="star-icon fill-yellow-400"></i>
+                  <i data-lucide="star" class="star-icon fill-yellow-400"></i>
+                  <i data-lucide="star" class="star-icon fill-yellow-400"></i>
+                  <i data-lucide="star" class="star-icon fill-yellow-400"></i>
+                  <i data-lucide="star" class="star-icon fill-gray-200"></i>
+                </div>
+              </div>
+              <div class="review-content">
+                <p>Great course overall! The HTML and CSS sections are excellent, and the JavaScript portion is very thorough. The only reason I'm giving 4 stars instead of 5 is that the backend section feels a bit rushed compared to the rest. I still learned a ton and would recommend this course to anyone interested in web development.</p>
+              </div>
+            </div>
+            
+            <div class="review-card">
+              <div class="review-header">
+                <div class="reviewer">
+                  <img src="https://randomuser.me/api/portraits/men/67.jpg" class="reviewer-avatar" alt="David Chen">
+                  <div class="reviewer-info">
+                    <div class="reviewer-name">David Chen</div>
+                    <div class="review-date">3 months ago</div>
+                  </div>
+                </div>
+                <div class="review-rating">
+                  <i data-lucide="star" class="star-icon fill-yellow-400"></i>
+                  <i data-lucide="star" class="star-icon fill-yellow-400"></i>
+                  <i data-lucide="star" class="star-icon fill-yellow-400"></i>
+                  <i data-lucide="star" class="star-icon fill-yellow-400"></i>
+                  <i data-lucide="star" class="star-icon fill-yellow-400"></i>
+                </div>
+              </div>
+              <div class="review-content">
+                <p>As someone with some programming experience but new to web development, this course was perfect for me. Dr. Lee's teaching style is clear and engaging. The projects are challenging enough to be interesting but not overwhelming. I especially appreciated the section on modern JavaScript frameworks. Definitely the best web development course I've taken!</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+  
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container footer-content">
+      &copy; 2025 EdTech Platform. All rights reserved.
+    </div>
+  </footer>
+
+  <script>
+    // Initialize Lucide icons
+    lucide.createIcons();
+    
+    // Course details data (would normally come from an API)
+    const courseId = new URLSearchParams(window.location.search).get('id') || '1';
+    let course = null;
+    
+    // Get course data
+    function fetchCourseData() {
+      // In a real app, this would fetch from an API
+      fetch('courses.js')
+        .then(response => {
+          if (response.ok) {
+            // For demo purposes, sourcing from courses.js
+            // In reality, this should be a proper API endpoint
+            const scriptContent = document.createElement('script');
+            scriptContent.textContent = response.text();
+            document.head.appendChild(scriptContent);
+            setTimeout(() => {
+              course = window.coursesData?.find(c => c.id === courseId);
+              if (course) {
+                populateCourseData(course);
+              } else {
+                handleCourseNotFound();
+              }
+            }, 100);
+          } else {
+            throw new Error('Failed to fetch course data');
+          }
+        })
+        .catch(error => {
+          console.error('Error fetching course data:', error);
+          // Fallback to hard-coded data for demo
+          populateCourseData({
+            id: '1',
+            title: 'Complete Web Development Bootcamp',
+            instructor: 'Dr. Jennifer Lee',
+            price: 99.99,
+            discountPrice: 49.99,
+            rating: 4.8,
+            reviewCount: 4253,
+            level: 'beginner',
+            category: 'Web Development',
+            image: 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?q=80&w=600&auto=format&fit=crop',
+            duration: '42h 30m'
+          });
+        });
+    }
+    
+    // Populate course data
+    function populateCourseData(course) {
+      // Update page title
+      document.title = `${course.title} - EdTech Platform`;
+      
+      // Update course header
+      document.querySelector('.course-title').textContent = course.title;
+      document.querySelector('.course-category').textContent = course.category;
+      document.querySelector('.course-rating').textContent = course.rating;
+      document.querySelector('.review-count').textContent = `(${course.reviewCount.toLocaleString()} reviews)`;
+      document.querySelector('.course-duration').textContent = course.duration;
+      document.querySelector('.course-level').textContent = course.level.charAt(0).toUpperCase() + course.level.slice(1);
+      document.querySelector('.instructor-link').textContent = course.instructor;
+      
+      // Update price
+      document.querySelector('.current-price').textContent = `$${course.discountPrice.toFixed(2)}`;
+      document.querySelector('.original-price').textContent = `$${course.price.toFixed(2)}`;
+      
+      // Calculate discount percentage
+      const discountPercent = Math.round(((course.price - course.discountPrice) / course.price) * 100);
+      document.querySelector('.discount-badge').textContent = `${discountPercent}% off`;
+      
+      // Update course image
+      document.querySelector('.course-preview').src = course.image;
+      
+      // Check if course is in cart
+      updateAddToCartButton();
+    }
+    
+    // Handle course not found
+    function handleCourseNotFound() {
+      const mainContent = document.querySelector('main');
+      mainContent.innerHTML = `
+        <div class="container" style="padding: 4rem 0; text-align: center;">
+          <h1 style="font-size: 2rem; font-weight: 600; margin-bottom: 1rem;">Course Not Found</h1>
+          <p style="margin-bottom: 2rem;">The course you're looking for doesn't exist or has been removed.</p>
+          <a href="courses.html" class="btn btn-primary">Browse Courses</a>
+        </div>
+      `;
+    }
+    
+    // Tab functionality
+    document.querySelectorAll('.tab-item').forEach(tab => {
+      tab.addEventListener('click', () => {
+        // Remove active class from all tabs and panels
+        document.querySelectorAll('.tab-item').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+        
+        // Add active class to clicked tab and corresponding panel
+        tab.classList.add('active');
+        const tabId = tab.getAttribute('data-tab');
+        document.getElementById(`${tabId}-tab`).classList.add('active');
+      });
+    });
+    
+    // Curriculum section toggle
+    document.querySelectorAll('.curriculum-section-header').forEach(header => {
+      header.addEventListener('click', () => {
+        const section = header.parentElement;
+        section.classList.toggle('open');
+        
+        // Toggle icon
+        const icon = header.querySelector('i');
+        if (section.classList.contains('open')) {
+          icon.setAttribute('name', 'chevron-up');
+        } else {
+          icon.setAttribute('name', 'chevron-down');
+        }
+        
+        // Re-initialize icons
+        lucide.createIcons({
+          icons: {
+            ChevronDown: `<line x1="6" y1="9" x2="12" y2="15" /><line x1="12" y1="15" x2="18" y2="9" />`,
+            ChevronUp: `<line x1="6" y1="15" x2="12" y2="9" /><line x1="12" y1="9" x2="18" y2="15" />`
+          }
+        });
+      });
+    });
+    
+    // Cart functionality
+    function initializeCart() {
+      const savedCart = localStorage.getItem('courseCart');
+      if (savedCart) {
+        try {
+          return JSON.parse(savedCart);
+        } catch (error) {
+          console.error('Failed to parse cart:', error);
+          return { items: [], totalItems: 0, totalPrice: 0 };
+        }
+      }
+      return { items: [], totalItems: 0, totalPrice: 0 };
+    }
+    
+    function saveCart(cart) {
+      localStorage.setItem('courseCart', JSON.stringify(cart));
+      updateCartBadge(cart);
+    }
+    
+    function updateCartBadge(cart) {
+      const badge = document.getElementById('cartBadge');
+      if (badge) {
+        badge.textContent = cart.totalItems;
+      }
+    }
+    
+    function updateAddToCartButton() {
+      const cart = initializeCart();
+      const addToCartBtn = document.getElementById('addToCartBtn');
+      
+      if (cart.items.some(item => item.courseId === courseId)) {
+        // Course is already in cart
+        addToCartBtn.textContent = 'Go to Cart';
+        addToCartBtn.addEventListener('click', () => {
+          window.location.href = 'cart.html';
+        });
+      } else {
+        // Course is not in cart
+        addToCartBtn.innerHTML = '<i data-lucide="shopping-cart"></i> Add to Cart';
+        addToCartBtn.addEventListener('click', addToCart);
+        lucide.createIcons();
+      }
+    }
+    
+    function addToCart() {
+      const cart = initializeCart();
+      
+      if (cart.items.some(item => item.courseId === courseId)) {
+        // Course already in cart
+        window.location.href = 'cart.html';
+        return;
+      }
+      
+      // Add course to cart
+      cart.items.push({ courseId, quantity: 1 });
+      cart.totalItems += 1;
+      cart.totalPrice += (course.discountPrice || course.price);
+      
+      saveCart(cart);
+      
+      // Update button
+      const addToCartBtn = document.getElementById('addToCartBtn');
+      addToCartBtn.textContent = 'Go to Cart';
+      addToCartBtn.removeEventListener('click', addToCart);
+      addToCartBtn.addEventListener('click', () => {
+        window.location.href = 'cart.html';
+      });
+      
+      // Show confirmation
+      alert('Course added to cart!');
+    }
+    
+    // Initialize page
+    document.addEventListener('DOMContentLoaded', () => {
+      fetchCourseData();
+      updateCartBadge(initializeCart());
+    });
+  </script>
+</body>
+</html>
