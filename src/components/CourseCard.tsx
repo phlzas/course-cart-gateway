@@ -1,9 +1,9 @@
 
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Star, Clock, ShoppingCart } from 'lucide-react';
+import { Star, Clock, ShoppingCart, CreditCard } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Course } from '@/data/coursesData';
 import { useCart } from '@/context/CartContext';
@@ -14,6 +14,7 @@ interface CourseCardProps {
 
 const CourseCard: React.FC<CourseCardProps> = ({ course }) => {
   const { addToCart, purchasedCourses } = useCart();
+  const navigate = useNavigate();
   
   const isOwned = purchasedCourses.some(c => c.id === course.id);
   
@@ -30,8 +31,21 @@ const CourseCard: React.FC<CourseCardProps> = ({ course }) => {
     }
   };
   
+  const handleCardClick = () => {
+    navigate(`/course/${course.id}`);
+  };
+  
+  const handleBuyNow = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    addToCart(course);
+    navigate('/cart');
+  };
+  
   return (
-    <Card className="course-card overflow-hidden h-full flex flex-col">
+    <Card 
+      className="course-card overflow-hidden h-full flex flex-col cursor-pointer hover:shadow-md transition-all duration-300 hover:-translate-y-1"
+      onClick={handleCardClick}
+    >
       <div className="aspect-video overflow-hidden relative">
         <img
           src={course.image}
@@ -54,9 +68,7 @@ const CourseCard: React.FC<CourseCardProps> = ({ course }) => {
           </Badge>
         </div>
         <h3 className="font-semibold text-lg mb-2 line-clamp-2">
-          <Link to={`/course/${course.id}`} className="hover:text-primary">
-            {course.title}
-          </Link>
+          {course.title}
         </h3>
         <p className="text-sm text-muted-foreground mb-2">
           {course.instructor}
@@ -66,7 +78,7 @@ const CourseCard: React.FC<CourseCardProps> = ({ course }) => {
           <span>{course.duration}</span>
         </div>
       </CardContent>
-      <CardFooter className="p-4 pt-0 flex items-center justify-between">
+      <CardFooter className="p-4 pt-0 flex items-center justify-between gap-2">
         <div className="flex items-center">
           {course.discountPrice ? (
             <>
@@ -80,16 +92,41 @@ const CourseCard: React.FC<CourseCardProps> = ({ course }) => {
           )}
         </div>
         {isOwned ? (
-          <Button asChild variant="outline">
+          <Button 
+            asChild 
+            variant="outline" 
+            size="sm"
+            onClick={(e) => {
+              e.stopPropagation();
+            }}
+          >
             <Link to={`/course-content/${course.id}`}>
               View Course
             </Link>
           </Button>
         ) : (
-          <Button onClick={() => addToCart(course)} size="sm">
-            <ShoppingCart className="h-4 w-4 mr-2" />
-            Add to Cart
-          </Button>
+          <div className="flex gap-2">
+            <Button 
+              size="sm" 
+              variant="outline"
+              onClick={(e) => {
+                e.stopPropagation();
+                addToCart(course);
+              }}
+              className="flex-1"
+            >
+              <ShoppingCart className="h-4 w-4 mr-2" />
+              Add
+            </Button>
+            <Button 
+              size="sm"
+              onClick={handleBuyNow}
+              className="flex-1"
+            >
+              <CreditCard className="h-4 w-4 mr-2" />
+              Buy
+            </Button>
+          </div>
         )}
       </CardFooter>
     </Card>

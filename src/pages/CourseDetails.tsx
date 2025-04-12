@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import Navbar from '@/components/Navbar';
 import { Button } from '@/components/ui/button';
 import { 
@@ -9,7 +9,9 @@ import {
   User, 
   ShoppingCart, 
   CheckCircle,
-  Star 
+  Star,
+  CreditCard,
+  ArrowLeft 
 } from 'lucide-react';
 import { Separator } from '@/components/ui/separator';
 import { Badge } from '@/components/ui/badge';
@@ -19,6 +21,7 @@ import { useCart } from '@/context/CartContext';
 const CourseDetails = () => {
   const { id } = useParams<{ id: string }>();
   const { addToCart, cart, purchasedCourses } = useCart();
+  const navigate = useNavigate();
   
   const course = coursesData.find(course => course.id === id);
   
@@ -41,6 +44,11 @@ const CourseDetails = () => {
 
   const isInCart = cart.items.some(item => item.course.id === course.id);
   const isOwned = purchasedCourses.some(c => c.id === course.id);
+  
+  const handleBuyNow = () => {
+    addToCart(course);
+    navigate('/checkout');
+  };
   
   const renderCourseContent = () => {
     return (
@@ -87,8 +95,18 @@ const CourseDetails = () => {
       
       <main className="flex-1">
         {/* Course Header */}
-        <div className="bg-gradient-to-r from-blue-600 to-indigo-700 py-12">
+        <div className="bg-gradient-to-r from-purple-600 to-indigo-700 py-12">
           <div className="container px-4 md:px-6">
+            <Button 
+              variant="ghost" 
+              size="sm" 
+              className="bg-white/20 text-white mb-4 hover:bg-white/30"
+              onClick={() => navigate('/courses')}
+            >
+              <ArrowLeft className="mr-2 h-4 w-4" />
+              Back to Courses
+            </Button>
+            
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
               <div className="space-y-4">
                 <Badge className="bg-white/20 text-white hover:bg-white/30 transition-colors">
@@ -139,6 +157,9 @@ const CourseDetails = () => {
                           <span className="text-lg text-muted-foreground line-through ml-2">
                             ${course.price.toFixed(2)}
                           </span>
+                          <span className="ml-2 bg-green-100 text-green-800 text-xs font-medium px-2 py-0.5 rounded">
+                            {Math.round(((course.price - course.discountPrice) / course.price) * 100)}% OFF
+                          </span>
                         </>
                       ) : (
                         <span className="text-3xl font-bold">${course.price.toFixed(2)}</span>
@@ -153,26 +174,51 @@ const CourseDetails = () => {
                         </Link>
                       </Button>
                     ) : isInCart ? (
-                      <Button className="w-full" asChild>
-                        <Link to="/cart">
-                          <ShoppingCart className="h-5 w-5 mr-2" />
-                          Go to Cart
-                        </Link>
-                      </Button>
+                      <div className="flex gap-2">
+                        <Button className="w-full" asChild>
+                          <Link to="/cart">
+                            <ShoppingCart className="h-5 w-5 mr-2" />
+                            Go to Cart
+                          </Link>
+                        </Button>
+                        <Button className="w-full" onClick={handleBuyNow} variant="outline">
+                          <CreditCard className="h-5 w-5 mr-2" />
+                          Buy Now
+                        </Button>
+                      </div>
                     ) : (
-                      <Button 
-                        className="w-full" 
-                        onClick={() => addToCart(course)}
-                      >
-                        <ShoppingCart className="h-5 w-5 mr-2" />
-                        Add to Cart
-                      </Button>
+                      <div className="flex gap-2">
+                        <Button 
+                          className="w-full" 
+                          onClick={() => addToCart(course)}
+                        >
+                          <ShoppingCart className="h-5 w-5 mr-2" />
+                          Add to Cart
+                        </Button>
+                        <Button 
+                          className="w-full" 
+                          variant="secondary"
+                          onClick={handleBuyNow}
+                        >
+                          <CreditCard className="h-5 w-5 mr-2" />
+                          Buy Now
+                        </Button>
+                      </div>
                     )}
                     
                     <div className="text-sm text-muted-foreground">
-                      <p>Full lifetime access</p>
-                      <p>Access on all devices</p>
-                      <p>Certificate of completion</p>
+                      <p className="flex items-center mb-1">
+                        <CheckCircle className="h-4 w-4 mr-2 text-green-500" />
+                        Full lifetime access
+                      </p>
+                      <p className="flex items-center mb-1">
+                        <CheckCircle className="h-4 w-4 mr-2 text-green-500" />
+                        Access on all devices
+                      </p>
+                      <p className="flex items-center">
+                        <CheckCircle className="h-4 w-4 mr-2 text-green-500" />
+                        Certificate of completion
+                      </p>
                     </div>
                   </div>
                 </div>
