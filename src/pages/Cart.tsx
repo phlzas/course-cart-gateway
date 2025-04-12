@@ -2,6 +2,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import Navbar from '@/components/Navbar';
+import Footer from '@/components/Footer';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import CartItem from '@/components/CartItem';
@@ -20,15 +21,16 @@ const Cart = () => {
             <div className="mb-6 flex justify-center">
               <ShoppingCart className="h-24 w-24 text-muted-foreground" />
             </div>
-            <h1 className="text-2xl font-bold mb-4">Your Cart is Empty</h1>
+            <h1 className="text-2xl font-bold mb-4 text-[#333333]">Your Cart is Empty</h1>
             <p className="text-muted-foreground mb-6">
               Looks like you haven't added any courses to your cart yet.
             </p>
-            <Button asChild>
+            <Button asChild className="bg-[#00BFA6] hover:bg-[#00a896]">
               <Link to="/courses">Browse Courses</Link>
             </Button>
           </div>
         </div>
+        <Footer />
       </div>
     );
   }
@@ -40,7 +42,7 @@ const Cart = () => {
       <main className="flex-1 py-10 bg-gray-50">
         <div className="container px-4 md:px-6">
           <div className="mb-8">
-            <h1 className="text-2xl font-bold text-center">Shopping Cart ({cart.totalItems})</h1>
+            <h1 className="text-2xl font-bold text-center text-[#333333]">Shopping Cart ({cart.totalItems})</h1>
             <Separator className="my-4" />
           </div>
           
@@ -49,10 +51,10 @@ const Cart = () => {
             <div className="lg:col-span-2">
               <div className="bg-white rounded-lg shadow-sm overflow-hidden">
                 <div className="px-6 py-4 bg-gray-50 border-b flex items-center justify-between">
-                  <h2 className="font-semibold">COURSE</h2>
+                  <h2 className="font-semibold text-[#333333]">COURSE</h2>
                   <div className="flex space-x-16">
-                    <span className="font-semibold">PRICE</span>
-                    <span className="font-semibold">ACTION</span>
+                    <span className="font-semibold text-[#333333]">PRICE</span>
+                    <span className="font-semibold text-[#333333]">ACTION</span>
                   </div>
                 </div>
                 
@@ -67,7 +69,7 @@ const Cart = () => {
                 <Button 
                   variant="ghost" 
                   asChild
-                  className="text-primary"
+                  className="text-[#00BFA6]"
                 >
                   <Link to="/courses">
                     <ArrowLeft className="h-4 w-4 mr-2" />
@@ -88,7 +90,7 @@ const Cart = () => {
             {/* Order Summary */}
             <div>
               <div className="bg-white rounded-lg shadow-sm p-6 sticky top-20">
-                <h2 className="font-semibold text-lg mb-4">Order Summary</h2>
+                <h2 className="font-semibold text-lg mb-4 text-[#333333]">Order Summary</h2>
                 
                 <div className="space-y-3">
                   <div className="flex items-center justify-between">
@@ -109,11 +111,11 @@ const Cart = () => {
                   <Separator />
                   
                   <div className="flex items-center justify-between font-semibold text-lg">
-                    <span>Total:</span>
-                    <span>${cart.totalPrice.toFixed(2)} USD</span>
+                    <span className="text-[#333333]">Total:</span>
+                    <span className="text-[#333333]">${cart.totalPrice.toFixed(2)} USD</span>
                   </div>
                   
-                  <Button className="w-full mt-6 bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700" size="lg" asChild>
+                  <Button className="w-full mt-6 bg-[#00BFA6] hover:bg-[#00a896]" size="lg" asChild>
                     <Link to="/checkout">
                       Proceed To Checkout
                     </Link>
@@ -124,9 +126,9 @@ const Cart = () => {
                       <input
                         type="text"
                         placeholder="Enter coupon code"
-                        className="w-full border rounded-l-lg py-2 px-3 focus:outline-none focus:ring-2 focus:ring-primary"
+                        className="w-full border rounded-l-lg py-2 px-3 focus:outline-none focus:ring-2 focus:ring-[#00BFA6]"
                       />
-                      <Button className="absolute right-0 top-0 h-full rounded-l-none">
+                      <Button className="absolute right-0 top-0 h-full rounded-l-none bg-[#00BFA6] hover:bg-[#00a896]">
                         Apply
                       </Button>
                     </div>
@@ -142,6 +144,8 @@ const Cart = () => {
           </div>
         </div>
       </main>
+      
+      <Footer />
     </div>
   );
 };

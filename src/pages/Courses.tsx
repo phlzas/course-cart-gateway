@@ -1,6 +1,7 @@
 
 import React, { useState, useMemo } from 'react';
 import Navbar from '@/components/Navbar';
+import Footer from '@/components/Footer';
 import SearchBar from '@/components/SearchBar';
 import CourseCard from '@/components/CourseCard';
 import CourseFilter from '@/components/CourseFilter';
@@ -63,7 +64,7 @@ const Courses = () => {
       <main className="flex-1 py-8">
         <div className="container px-4 md:px-6">
           <div className="mb-8">
-            <h1 className="text-3xl font-bold tracking-tight mb-4 text-gray-900">Browse All Courses</h1>
+            <h1 className="text-3xl font-bold tracking-tight mb-4 text-[#333333]">Browse All Courses</h1>
             <SearchBar onSearch={handleSearch} />
           </div>
           
@@ -71,7 +72,7 @@ const Courses = () => {
             {/* Filters */}
             <div className="space-y-6">
               <div className="p-4 border rounded-lg bg-white shadow-sm">
-                <h2 className="font-semibold mb-4 text-gray-900">Filters</h2>
+                <h2 className="font-semibold mb-4 text-[#333333]">Filters</h2>
                 
                 <div className="space-y-6">
                   <CourseFilter
@@ -89,7 +90,7 @@ const Courses = () => {
                   />
                   
                   <div className="space-y-2">
-                    <p className="text-sm font-medium text-gray-900">Price Range</p>
+                    <p className="text-sm font-medium text-[#333333]">Price Range</p>
                     <Slider
                       defaultValue={[0, 150]}
                       max={150}
@@ -111,7 +112,7 @@ const Courses = () => {
             <div className="lg:col-span-3">
               {filteredCourses.length === 0 ? (
                 <div className="text-center py-12 bg-white rounded-lg shadow-sm">
-                  <h3 className="text-xl font-medium text-gray-900">No courses found</h3>
+                  <h3 className="text-xl font-medium text-[#333333]">No courses found</h3>
                   <p className="text-gray-600 mt-2">Try adjusting your search or filters</p>
                 </div>
               ) : (
@@ -130,6 +131,8 @@ const Courses = () => {
           </div>
         </div>
       </main>
+      
+      <Footer />
     </div>
   );
 };

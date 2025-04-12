@@ -17,20 +17,32 @@ const Navbar: React.FC = () => {
     <header className="sticky top-0 z-40 w-full border-b bg-background/95 backdrop-blur">
       <div className="container px-4">
         <nav className="flex h-16 items-center justify-between">
-          <div className="logo font-bold text-xl">DREAM COACH</div>
+          <div className="logo font-bold text-xl text-[#333333]">DREAM COACH</div>
           
           <div className="nav-links hidden md:flex items-center space-x-6">
             <Link
               to="/courses"
-              className="text-gray-700 hover:text-purple-600 focus:outline-none focus:ring-2 focus:ring-purple-600 focus:ring-offset-2 rounded px-2 py-1 transition-colors duration-200"
+              className="text-[#333333] hover:text-[#00BFA6] focus:outline-none focus:ring-2 focus:ring-[#00BFA6] focus:ring-offset-2 rounded px-2 py-1 transition-colors duration-200"
             >
               Courses
             </Link>
             <Link
               to="/my-courses"
-              className="text-gray-700 hover:text-purple-600 focus:outline-none focus:ring-2 focus:ring-purple-600 focus:ring-offset-2 rounded px-2 py-1 transition-colors duration-200"
+              className="text-[#333333] hover:text-[#00BFA6] focus:outline-none focus:ring-2 focus:ring-[#00BFA6] focus:ring-offset-2 rounded px-2 py-1 transition-colors duration-200"
             >
               My Learning
+            </Link>
+            <Link
+              to="/testimonials"
+              className="text-[#333333] hover:text-[#00BFA6] focus:outline-none focus:ring-2 focus:ring-[#00BFA6] focus:ring-offset-2 rounded px-2 py-1 transition-colors duration-200"
+            >
+              Testimonials
+            </Link>
+            <Link
+              to="/contact"
+              className="text-[#333333] hover:text-[#00BFA6] focus:outline-none focus:ring-2 focus:ring-[#00BFA6] focus:ring-offset-2 rounded px-2 py-1 transition-colors duration-200"
+            >
+              Contact
             </Link>
           </div>
           
@@ -43,7 +55,7 @@ const Navbar: React.FC = () => {
               <Button variant="ghost" size="icon" className="cart-btn">
                 <ShoppingCart className="h-5 w-5" />
                 {cart.totalItems > 0 && (
-                  <span className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-course-green text-xs text-white">
+                  <span className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-[#00BFA6] text-xs text-white">
                     {cart.totalItems}
                   </span>
                 )}
@@ -64,17 +76,17 @@ const Navbar: React.FC = () => {
               
               {isProfileOpen && (
                 <div className="dropdown-content absolute right-0 mt-2 w-48 rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 z-50">
-                  <Link to="/profile" className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                  <Link to="/profile" className="flex items-center px-4 py-2 text-sm text-[#333333] hover:bg-gray-100">
                     <User className="mr-2 h-4 w-4" /> Profile
                   </Link>
-                  <Link to="/edit-account" className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                  <Link to="/edit-account" className="flex items-center px-4 py-2 text-sm text-[#333333] hover:bg-gray-100">
                     <Edit3 className="mr-2 h-4 w-4" /> Edit Account
                   </Link>
-                  <Link to="/settings" className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                  <Link to="/settings" className="flex items-center px-4 py-2 text-sm text-[#333333] hover:bg-gray-100">
                     <Settings className="mr-2 h-4 w-4" /> Settings
                   </Link>
                   <hr className="my-1" />
-                  <Link to="/logout" className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                  <Link to="/logout" className="flex items-center px-4 py-2 text-sm text-[#333333] hover:bg-gray-100">
                     <LogOut className="mr-2 h-4 w-4" /> Logout
                   </Link>
                 </div>

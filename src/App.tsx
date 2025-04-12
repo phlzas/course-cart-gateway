@@ -30,6 +30,13 @@ const App = () => (
             <Route path="/checkout" element={<Checkout />} />
             <Route path="/my-courses" element={<MyCourses />} />
             <Route path="/course-content/:id" element={<CourseContent />} />
+            <Route path="/about" element={<NotFound />} />
+            <Route path="/contact" element={<NotFound />} />
+            <Route path="/testimonials" element={<NotFound />} />
+            <Route path="/faq" element={<NotFound />} />
+            <Route path="/support" element={<NotFound />} />
+            <Route path="/terms" element={<NotFound />} />
+            <Route path="/privacy" element={<NotFound />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>

@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Navbar from '@/components/Navbar';
+import Footer from '@/components/Footer';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -111,7 +112,7 @@ const Checkout = () => {
       
       <main className="flex-1 py-10">
         <div className="container px-4 md:px-6 max-w-5xl">
-          <h1 className="text-2xl font-bold mb-8">Checkout</h1>
+          <h1 className="text-2xl font-bold mb-8 text-[#333333]">Checkout</h1>
           
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             <div className="lg:col-span-2">
@@ -120,12 +121,12 @@ const Checkout = () => {
                   <CardContent className="p-6">
                     <div className="space-y-6">
                       <div>
-                        <h2 className="text-xl font-semibold mb-4">Payment Details</h2>
+                        <h2 className="text-xl font-semibold mb-4 text-[#333333]">Payment Details</h2>
                         <div className="flex items-center justify-between mb-6">
                           <div className="flex items-center space-x-4">
                             <CreditCard className="h-10 w-10 text-muted-foreground" />
                             <div>
-                              <p className="font-medium">Credit / Debit Card</p>
+                              <p className="font-medium text-[#333333]">Credit / Debit Card</p>
                               <p className="text-sm text-muted-foreground">Secure payment processing</p>
                             </div>
                           </div>
@@ -141,14 +142,14 @@ const Checkout = () => {
                         
                         <div className="space-y-4">
                           <div className="space-y-2">
-                            <Label htmlFor="cardNumber">Card Number</Label>
+                            <Label htmlFor="cardNumber" className="text-[#333333]">Card Number</Label>
                             <div className="relative">
                               <Input
                                 id="cardNumber"
                                 placeholder="1234 5678 9012 3456"
                                 value={cardInfo.cardNumber}
                                 onChange={handleCardNumberChange}
-                                className="pl-10"
+                                className="pl-10 focus:ring-[#00BFA6]"
                                 required
                                 maxLength={19}
                               />
@@ -157,26 +158,27 @@ const Checkout = () => {
                           </div>
                           
                           <div className="space-y-2">
-                            <Label htmlFor="cardName">Cardholder Name</Label>
+                            <Label htmlFor="cardName" className="text-[#333333]">Cardholder Name</Label>
                             <Input
                               id="cardName"
                               placeholder="John Smith"
                               value={cardInfo.cardName}
                               onChange={(e) => setCardInfo({ ...cardInfo, cardName: e.target.value })}
+                              className="focus:ring-[#00BFA6]"
                               required
                             />
                           </div>
                           
                           <div className="grid grid-cols-2 gap-4">
                             <div className="space-y-2">
-                              <Label htmlFor="expiryDate">Expiry Date</Label>
+                              <Label htmlFor="expiryDate" className="text-[#333333]">Expiry Date</Label>
                               <div className="relative">
                                 <Input
                                   id="expiryDate"
                                   placeholder="MM/YY"
                                   value={cardInfo.expiryDate}
                                   onChange={handleExpiryDateChange}
-                                  className="pl-10"
+                                  className="pl-10 focus:ring-[#00BFA6]"
                                   required
                                   maxLength={5}
                                 />
@@ -185,14 +187,14 @@ const Checkout = () => {
                             </div>
                             
                             <div className="space-y-2">
-                              <Label htmlFor="cvv">CVV</Label>
+                              <Label htmlFor="cvv" className="text-[#333333]">CVV</Label>
                               <div className="relative">
                                 <Input
                                   id="cvv"
                                   placeholder="123"
                                   value={cardInfo.cvv}
                                   onChange={handleCvvChange}
-                                  className="pl-10"
+                                  className="pl-10 focus:ring-[#00BFA6]"
                                   required
                                   maxLength={3}
                                   type="password"
@@ -214,7 +216,7 @@ const Checkout = () => {
                   <CardFooter className="p-6 pt-0">
                     <Button 
                       type="submit" 
-                      className="w-full" 
+                      className="w-full bg-[#00BFA6] hover:bg-[#00a896]" 
                       size="lg"
                       disabled={isProcessing}
                     >
@@ -240,7 +242,7 @@ const Checkout = () => {
             <div>
               <Card>
                 <CardContent className="p-6">
-                  <h2 className="font-semibold text-lg mb-4">Order Summary</h2>
+                  <h2 className="font-semibold text-lg mb-4 text-[#333333]">Order Summary</h2>
                   
                   <div className="space-y-4">
                     <div className="max-h-64 overflow-y-auto space-y-3">
@@ -254,10 +256,10 @@ const Checkout = () => {
                             />
                           </div>
                           <div className="flex-1 min-w-0">
-                            <h3 className="font-medium text-sm truncate">{item.course.title}</h3>
+                            <h3 className="font-medium text-sm truncate text-[#333333]">{item.course.title}</h3>
                             <p className="text-xs text-muted-foreground">by {item.course.instructor}</p>
                           </div>
-                          <div className="text-sm font-medium">
+                          <div className="text-sm font-medium text-[#333333]">
                             ${(item.course.discountPrice || item.course.price).toFixed(2)}
                           </div>
                         </div>
@@ -269,7 +271,7 @@ const Checkout = () => {
                     <div className="space-y-2">
                       <div className="flex justify-between text-sm">
                         <span className="text-muted-foreground">Subtotal</span>
-                        <span>${cart.items.reduce((total, item) => total + item.course.price, 0).toFixed(2)}</span>
+                        <span className="text-[#333333]">${cart.items.reduce((total, item) => total + item.course.price, 0).toFixed(2)}</span>
                       </div>
                       <div className="flex justify-between text-sm">
                         <span className="text-muted-foreground">Discounts</span>
@@ -286,8 +288,8 @@ const Checkout = () => {
                     <Separator />
                     
                     <div className="flex justify-between font-medium">
-                      <span>Total</span>
-                      <span>${cart.totalPrice.toFixed(2)}</span>
+                      <span className="text-[#333333]">Total</span>
+                      <span className="text-[#333333]">${cart.totalPrice.toFixed(2)}</span>
                     </div>
                   </div>
                 </CardContent>
@@ -307,13 +309,13 @@ const Checkout = () => {
               
               <div className="mt-6">
                 <div className="p-4 border rounded-lg">
-                  <h3 className="font-medium mb-2 flex items-center justify-between cursor-pointer">
+                  <h3 className="font-medium mb-2 flex items-center justify-between cursor-pointer text-[#333333]">
                     <span>Have a coupon?</span>
                     <ChevronsUpDown className="h-4 w-4" />
                   </h3>
                   <div className="flex mt-2">
-                    <Input placeholder="Enter coupon code" className="rounded-r-none" />
-                    <Button variant="secondary" className="rounded-l-none">Apply</Button>
+                    <Input placeholder="Enter coupon code" className="rounded-r-none focus:ring-[#00BFA6]" />
+                    <Button variant="secondary" className="rounded-l-none bg-[#00BFA6] text-white hover:bg-[#00a896]">Apply</Button>
                   </div>
                 </div>
               </div>
@@ -321,6 +323,8 @@ const Checkout = () => {
           </div>
         </div>
       </main>
+      
+      <Footer />
     </div>
   );
 };

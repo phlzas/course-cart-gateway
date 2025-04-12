@@ -2,6 +2,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import Navbar from '@/components/Navbar';
+import Footer from '@/components/Footer';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import { useCart } from '@/context/CartContext';
@@ -21,15 +22,16 @@ const MyCourses = () => {
             <div className="mb-6 flex justify-center">
               <BookOpen className="h-24 w-24 text-muted-foreground" />
             </div>
-            <h1 className="text-2xl font-bold mb-4">You don't have any courses yet</h1>
+            <h1 className="text-2xl font-bold mb-4 text-[#333333]">You don't have any courses yet</h1>
             <p className="text-muted-foreground mb-6">
               Browse our courses catalog and start your learning journey today!
             </p>
-            <Button asChild>
+            <Button asChild className="bg-[#00BFA6] hover:bg-[#00a896]">
               <Link to="/courses">Browse Courses</Link>
             </Button>
           </div>
         </div>
+        <Footer />
       </div>
     );
   }
@@ -40,7 +42,7 @@ const MyCourses = () => {
       
       <main className="flex-1 py-10">
         <div className="container px-4 md:px-6">
-          <h1 className="text-2xl font-bold mb-8">My Learning</h1>
+          <h1 className="text-2xl font-bold mb-8 text-[#333333]">My Learning</h1>
           
           <div className="mb-8">
             <div className="relative max-w-md mx-auto">
@@ -48,7 +50,7 @@ const MyCourses = () => {
               <input
                 type="search"
                 placeholder="Search your courses..."
-                className="w-full py-2 pl-10 pr-4 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+                className="w-full py-2 pl-10 pr-4 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#00BFA6]"
               />
             </div>
           </div>
@@ -69,7 +71,7 @@ const MyCourses = () => {
                       </Link>
                     </Button>
                   </div>
-                  <Badge className="absolute top-2 right-2">
+                  <Badge className="absolute top-2 right-2 bg-[#00BFA6]">
                     {course.category}
                   </Badge>
                 </div>
@@ -86,8 +88,8 @@ const MyCourses = () => {
                     </div>
                   </div>
                   
-                  <h3 className="font-semibold text-lg mb-2">
-                    <Link to={`/course-content/${course.id}`} className="hover:text-primary">
+                  <h3 className="font-semibold text-lg mb-2 text-[#333333]">
+                    <Link to={`/course-content/${course.id}`} className="hover:text-[#00BFA6]">
                       {course.title}
                     </Link>
                   </h3>
@@ -106,7 +108,7 @@ const MyCourses = () => {
                 </CardContent>
                 
                 <CardFooter className="p-4 pt-0">
-                  <Button asChild variant="outline" className="w-full">
+                  <Button asChild variant="outline" className="w-full text-[#333333] hover:text-[#00BFA6] hover:border-[#00BFA6]">
                     <Link to={`/course-content/${course.id}`}>
                       <BookOpen className="h-4 w-4 mr-2" />
                       Continue Learning
@@ -118,6 +120,8 @@ const MyCourses = () => {
           </div>
         </div>
       </main>
+      
+      <Footer />
     </div>
   );
 };
