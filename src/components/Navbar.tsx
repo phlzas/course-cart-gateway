@@ -21,22 +21,16 @@ const Navbar: React.FC = () => {
           
           <div className="nav-links hidden md:flex items-center space-x-6">
             <Link
-              to="/"
-              className="text-gray-700 hover:text-purple-600 focus:outline-none focus:ring-2 focus:ring-purple-600 focus:ring-offset-2 rounded px-2 py-1 transition-colors duration-200"
-            >
-              Home
-            </Link>
-            <Link
               to="/courses"
               className="text-gray-700 hover:text-purple-600 focus:outline-none focus:ring-2 focus:ring-purple-600 focus:ring-offset-2 rounded px-2 py-1 transition-colors duration-200"
             >
               Courses
             </Link>
             <Link
-              to="/dashboard"
+              to="/my-courses"
               className="text-gray-700 hover:text-purple-600 focus:outline-none focus:ring-2 focus:ring-purple-600 focus:ring-offset-2 rounded px-2 py-1 transition-colors duration-200"
             >
-              Dashboard
+              My Learning
             </Link>
           </div>
           
@@ -49,7 +43,7 @@ const Navbar: React.FC = () => {
               <Button variant="ghost" size="icon" className="cart-btn">
                 <ShoppingCart className="h-5 w-5" />
                 {cart.totalItems > 0 && (
-                  <span className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-primary text-xs text-white">
+                  <span className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-course-green text-xs text-white">
                     {cart.totalItems}
                   </span>
                 )}

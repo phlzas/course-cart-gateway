@@ -21,11 +21,11 @@ const CourseCard: React.FC<CourseCardProps> = ({ course }) => {
   const getLevelClass = (level: string) => {
     switch (level) {
       case 'beginner':
-        return 'course-level-beginner';
+        return 'bg-green-100 text-green-800';
       case 'intermediate':
-        return 'course-level-intermediate';
+        return 'bg-blue-100 text-blue-800';
       case 'advanced':
-        return 'course-level-advanced';
+        return 'bg-purple-100 text-purple-800';
       default:
         return 'bg-gray-100 text-gray-800';
     }
@@ -43,7 +43,7 @@ const CourseCard: React.FC<CourseCardProps> = ({ course }) => {
   
   return (
     <Card 
-      className="course-card overflow-hidden h-full flex flex-col cursor-pointer hover:shadow-md transition-all duration-300 hover:-translate-y-1"
+      className="course-card overflow-hidden h-full flex flex-col cursor-pointer hover:shadow-md transition-all duration-300 hover:-translate-y-1 bg-white"
       onClick={handleCardClick}
     >
       <div className="aspect-video overflow-hidden relative">
@@ -52,7 +52,7 @@ const CourseCard: React.FC<CourseCardProps> = ({ course }) => {
           alt={course.title}
           className="object-cover w-full h-full transition-transform hover:scale-105"
         />
-        <Badge className="absolute top-2 right-2">
+        <Badge className="absolute top-2 right-2 bg-green-500 hover:bg-green-600">
           {course.category}
         </Badge>
       </div>
@@ -60,35 +60,35 @@ const CourseCard: React.FC<CourseCardProps> = ({ course }) => {
         <div className="flex items-center justify-between mb-2">
           <div className="flex items-center">
             <Star className="h-4 w-4 fill-yellow-400 text-yellow-400 mr-1" />
-            <span className="text-sm font-medium">{course.rating}</span>
-            <span className="text-xs text-muted-foreground ml-1">({course.reviewCount})</span>
+            <span className="text-sm font-medium text-gray-900">{course.rating}</span>
+            <span className="text-xs text-gray-500 ml-1">({course.reviewCount})</span>
           </div>
           <Badge variant="outline" className={getLevelClass(course.level)}>
             {course.level.charAt(0).toUpperCase() + course.level.slice(1)}
           </Badge>
         </div>
-        <h3 className="font-semibold text-lg mb-2 line-clamp-2">
+        <h3 className="font-semibold text-lg mb-2 line-clamp-2 text-gray-900">
           {course.title}
         </h3>
-        <p className="text-sm text-muted-foreground mb-2">
+        <p className="text-sm text-gray-600 mb-2">
           {course.instructor}
         </p>
-        <div className="flex items-center text-sm text-muted-foreground">
+        <div className="flex items-center text-sm text-gray-500">
           <Clock className="h-4 w-4 mr-1" />
           <span>{course.duration}</span>
         </div>
       </CardContent>
-      <CardFooter className="p-4 pt-0 flex items-center justify-between gap-2">
+      <CardFooter className="p-4 pt-0 flex items-center justify-between gap-2 border-t border-gray-100">
         <div className="flex items-center">
           {course.discountPrice ? (
             <>
-              <span className="font-bold text-lg">${course.discountPrice.toFixed(2)}</span>
-              <span className="text-sm text-muted-foreground line-through ml-2">
+              <span className="font-bold text-lg text-gray-900">${course.discountPrice.toFixed(2)}</span>
+              <span className="text-sm text-gray-500 line-through ml-2">
                 ${course.price.toFixed(2)}
               </span>
             </>
           ) : (
-            <span className="font-bold text-lg">${course.price.toFixed(2)}</span>
+            <span className="font-bold text-lg text-gray-900">${course.price.toFixed(2)}</span>
           )}
         </div>
         {isOwned ? (
@@ -99,6 +99,7 @@ const CourseCard: React.FC<CourseCardProps> = ({ course }) => {
             onClick={(e) => {
               e.stopPropagation();
             }}
+            className="text-gray-700 border-gray-300 hover:bg-gray-50"
           >
             <Link to={`/course-content/${course.id}`}>
               View Course
@@ -113,7 +114,7 @@ const CourseCard: React.FC<CourseCardProps> = ({ course }) => {
                 e.stopPropagation();
                 addToCart(course);
               }}
-              className="flex-1"
+              className="flex-1 text-gray-700 border-gray-300 hover:bg-gray-50"
             >
               <ShoppingCart className="h-4 w-4 mr-2" />
               Add
@@ -121,7 +122,7 @@ const CourseCard: React.FC<CourseCardProps> = ({ course }) => {
             <Button 
               size="sm"
               onClick={handleBuyNow}
-              className="flex-1"
+              className="flex-1 bg-green-500 hover:bg-green-600 text-white"
             >
               <CreditCard className="h-4 w-4 mr-2" />
               Buy

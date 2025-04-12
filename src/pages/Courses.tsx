@@ -57,21 +57,21 @@ const Courses = () => {
   }, [searchTerm, categoryFilter, levelFilter, priceRange]);
   
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col bg-gray-50">
       <Navbar />
       
       <main className="flex-1 py-8">
         <div className="container px-4 md:px-6">
           <div className="mb-8">
-            <h1 className="text-3xl font-bold tracking-tight mb-4">Browse All Courses</h1>
+            <h1 className="text-3xl font-bold tracking-tight mb-4 text-gray-900">Browse All Courses</h1>
             <SearchBar onSearch={handleSearch} />
           </div>
           
           <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
             {/* Filters */}
             <div className="space-y-6">
-              <div className="p-4 border rounded-lg">
-                <h2 className="font-semibold mb-4">Filters</h2>
+              <div className="p-4 border rounded-lg bg-white shadow-sm">
+                <h2 className="font-semibold mb-4 text-gray-900">Filters</h2>
                 
                 <div className="space-y-6">
                   <CourseFilter
@@ -89,7 +89,7 @@ const Courses = () => {
                   />
                   
                   <div className="space-y-2">
-                    <p className="text-sm font-medium">Price Range</p>
+                    <p className="text-sm font-medium text-gray-900">Price Range</p>
                     <Slider
                       defaultValue={[0, 150]}
                       max={150}
@@ -99,8 +99,8 @@ const Courses = () => {
                       className="py-4"
                     />
                     <div className="flex items-center justify-between">
-                      <span className="text-sm">${priceRange[0]}</span>
-                      <span className="text-sm">${priceRange[1]}</span>
+                      <span className="text-sm text-gray-700">${priceRange[0]}</span>
+                      <span className="text-sm text-gray-700">${priceRange[1]}</span>
                     </div>
                   </div>
                 </div>
@@ -110,13 +110,13 @@ const Courses = () => {
             {/* Course Results */}
             <div className="lg:col-span-3">
               {filteredCourses.length === 0 ? (
-                <div className="text-center py-12">
-                  <h3 className="text-xl font-medium">No courses found</h3>
-                  <p className="text-muted-foreground mt-2">Try adjusting your search or filters</p>
+                <div className="text-center py-12 bg-white rounded-lg shadow-sm">
+                  <h3 className="text-xl font-medium text-gray-900">No courses found</h3>
+                  <p className="text-gray-600 mt-2">Try adjusting your search or filters</p>
                 </div>
               ) : (
                 <>
-                  <p className="text-muted-foreground mb-4">
+                  <p className="text-gray-600 mb-4">
                     Showing {filteredCourses.length} {filteredCourses.length === 1 ? 'course' : 'courses'}
                   </p>
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
