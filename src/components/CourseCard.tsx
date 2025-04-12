@@ -21,11 +21,11 @@ const CourseCard: React.FC<CourseCardProps> = ({ course }) => {
   const getLevelClass = (level: string) => {
     switch (level) {
       case 'beginner':
-        return 'bg-green-100 text-green-800';
+        return 'course-level-beginner';
       case 'intermediate':
-        return 'bg-blue-100 text-blue-800';
+        return 'course-level-intermediate';
       case 'advanced':
-        return 'bg-purple-100 text-purple-800';
+        return 'course-level-advanced';
       default:
         return 'bg-gray-100 text-gray-800';
     }
@@ -78,8 +78,8 @@ const CourseCard: React.FC<CourseCardProps> = ({ course }) => {
           <span>{course.duration}</span>
         </div>
       </CardContent>
-      <CardFooter className="p-4 pt-0 flex items-center justify-between gap-2 border-t border-gray-100">
-        <div className="flex items-center">
+      <CardFooter className="p-4 pt-0 flex flex-col border-t border-gray-100">
+        <div className="w-full flex items-center mb-3">
           {course.discountPrice ? (
             <>
               <span className="font-bold text-lg text-[#333333]">${course.discountPrice.toFixed(2)}</span>
@@ -99,14 +99,14 @@ const CourseCard: React.FC<CourseCardProps> = ({ course }) => {
             onClick={(e) => {
               e.stopPropagation();
             }}
-            className="text-gray-700 border-gray-300 hover:bg-gray-50"
+            className="w-full btn-outline"
           >
             <Link to={`/course-content/${course.id}`}>
               View Course
             </Link>
           </Button>
         ) : (
-          <div className="flex gap-2">
+          <div className="flex gap-2 w-full">
             <Button 
               size="sm" 
               variant="outline"
@@ -114,7 +114,7 @@ const CourseCard: React.FC<CourseCardProps> = ({ course }) => {
                 e.stopPropagation();
                 addToCart(course);
               }}
-              className="flex-1 text-gray-700 border-gray-300 hover:bg-gray-50"
+              className="flex-1 btn-outline"
             >
               <ShoppingCart className="h-4 w-4 mr-2" />
               Add
@@ -122,7 +122,7 @@ const CourseCard: React.FC<CourseCardProps> = ({ course }) => {
             <Button 
               size="sm"
               onClick={handleBuyNow}
-              className="flex-1 bg-[#00BFA6] hover:bg-[#00a896] text-white"
+              className="flex-1 btn-primary"
             >
               <CreditCard className="h-4 w-4 mr-2" />
               Buy

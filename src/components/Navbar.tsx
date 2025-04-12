@@ -17,7 +17,7 @@ const Navbar: React.FC = () => {
     <header className="sticky top-0 z-40 w-full border-b bg-background/95 backdrop-blur">
       <div className="container px-4">
         <nav className="flex h-16 items-center justify-between">
-          <div className="logo font-bold text-xl text-[#333333]">DREAM COACH</div>
+          <Link to="/" className="logo font-bold text-xl text-[#333333]">DREAM COACH</Link>
           
           <div className="nav-links hidden md:flex items-center space-x-6">
             <Link
@@ -33,16 +33,16 @@ const Navbar: React.FC = () => {
               My Learning
             </Link>
             <Link
-              to="/testimonials"
+              to="/faq"
               className="text-[#333333] hover:text-[#00BFA6] focus:outline-none focus:ring-2 focus:ring-[#00BFA6] focus:ring-offset-2 rounded px-2 py-1 transition-colors duration-200"
             >
-              Testimonials
+              FAQ
             </Link>
             <Link
-              to="/contact"
+              to="/support"
               className="text-[#333333] hover:text-[#00BFA6] focus:outline-none focus:ring-2 focus:ring-[#00BFA6] focus:ring-offset-2 rounded px-2 py-1 transition-colors duration-200"
             >
-              Contact
+              Support
             </Link>
           </div>
           
