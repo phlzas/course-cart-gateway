@@ -83,9 +83,21 @@ const coursesData = [
 
 class CoursesManager {
   constructor() {
+    this.currentPage = 1;
+    this.coursesPerPage = 6;
+    this.currentFilteredCourses = [...coursesData];
+    this.filters = {
+      search: '',
+      category: 'all',
+      level: 'all',
+      rating: 0,
+      price: 150
+    };
+    this.sortOption = 'popularity';
+    
     this.initializeCart();
-    this.renderCourses(coursesData);
     this.setupEventListeners();
+    this.applyFiltersAndSort();
   }
   
   initializeCart() {
@@ -135,14 +147,101 @@ class CoursesManager {
     alert('Course added to cart');
   }
   
-  renderCourses(courses) {
+  applyFiltersAndSort() {
+    // Show loading state
+    this.showLoading();
+    
+    // Apply filters
+    this.currentFilteredCourses = coursesData.filter(course => {
+      // Search term filter
+      const matchesSearch = this.filters.search === '' || 
+        course.title.toLowerCase().includes(this.filters.search.toLowerCase()) ||
+        course.instructor.toLowerCase().includes(this.filters.search.toLowerCase()) ||
+        course.category.toLowerCase().includes(this.filters.search.toLowerCase());
+      
+      // Category filter
+      const matchesCategory = this.filters.category === 'all' || course.category === this.filters.category;
+      
+      // Level filter
+      const matchesLevel = this.filters.level === 'all' || course.level === this.filters.level;
+      
+      // Rating filter
+      const matchesRating = course.rating >= this.filters.rating;
+      
+      // Price filter
+      const coursePrice = course.discountPrice || course.price;
+      const matchesPrice = coursePrice <= this.filters.price;
+      
+      return matchesSearch && matchesCategory && matchesLevel && matchesRating && matchesPrice;
+    });
+    
+    // Apply sorting
+    this.sortCourses();
+    
+    // Reset to page 1 when filters change
+    this.currentPage = 1;
+    
+    // Render courses and pagination
+    this.renderCourses();
+    this.renderPagination();
+  }
+  
+  sortCourses() {
+    switch(this.sortOption) {
+      case 'popularity':
+        // Sort by featured status first, then by rating
+        this.currentFilteredCourses.sort((a, b) => {
+          if (a.isFeatured && !b.isFeatured) return -1;
+          if (!a.isFeatured && b.isFeatured) return 1;
+          return b.rating - a.rating;
+        });
+        break;
+      case 'newest':
+        // For demo purposes, we'll use the ID as a proxy for "newest"
+        this.currentFilteredCourses.sort((a, b) => parseInt(b.id) - parseInt(a.id));
+        break;
+      case 'price-low':
+        this.currentFilteredCourses.sort((a, b) => {
+          const priceA = a.discountPrice || a.price;
+          const priceB = b.discountPrice || b.price;
+          return priceA - priceB;
+        });
+        break;
+      case 'price-high':
+        this.currentFilteredCourses.sort((a, b) => {
+          const priceA = a.discountPrice || a.price;
+          const priceB = b.discountPrice || b.price;
+          return priceB - priceA;
+        });
+        break;
+      case 'rating':
+        this.currentFilteredCourses.sort((a, b) => b.rating - a.rating);
+        break;
+    }
+  }
+  
+  showLoading() {
+    const coursesListEl = document.getElementById('coursesList');
+    coursesListEl.innerHTML = `
+      <div class="loading-container">
+        <div class="loading"></div>
+      </div>
+    `;
+  }
+  
+  renderCourses() {
     const coursesListEl = document.getElementById('coursesList');
     const coursesCountEl = document.getElementById('coursesCount');
     
-    coursesListEl.innerHTML = '';
-    coursesCountEl.textContent = `Showing ${courses.length} ${courses.length === 1 ? 'course' : 'courses'}`;
+    // Calculate pagination values
+    const startIndex = (this.currentPage - 1) * this.coursesPerPage;
+    const endIndex = Math.min(startIndex + this.coursesPerPage, this.currentFilteredCourses.length);
+    const currentPageCourses = this.currentFilteredCourses.slice(startIndex, endIndex);
     
-    if (courses.length === 0) {
+    coursesListEl.innerHTML = '';
+    coursesCountEl.textContent = `Showing ${this.currentFilteredCourses.length} ${this.currentFilteredCourses.length === 1 ? 'course' : 'courses'}`;
+    
+    if (this.currentFilteredCourses.length === 0) {
       coursesListEl.innerHTML = `
         <div class="no-courses">
           <h3>No courses found</h3>
@@ -152,7 +251,7 @@ class CoursesManager {
       return;
     }
     
-    courses.forEach(course => {
+    currentPageCourses.forEach(course => {
       const template = document.getElementById('courseCardTemplate');
       const clone = document.importNode(template.content, true);
       
@@ -168,7 +267,7 @@ class CoursesManager {
       clone.querySelector('.course-title').textContent = course.title;
       clone.querySelector('.course-instructor').textContent = course.instructor;
       clone.querySelector('.rating-value').textContent = course.rating;
-      clone.querySelector('.duration-icon + span').textContent = course.duration;
+      clone.querySelector('.course-duration .duration-icon + span').textContent = course.duration;
       
       // Set course level
       const levelEl = clone.querySelector('.course-level');
@@ -201,33 +300,68 @@ class CoursesManager {
     lucide.createIcons();
   }
   
-  filterCourses() {
-    const searchInput = document.getElementById('courseSearch').value.toLowerCase();
-    const categoryFilter = document.querySelector('input[name="category"]:checked').value;
-    const levelFilter = document.querySelector('input[name="level"]:checked').value;
-    const priceFilter = parseInt(document.getElementById('priceSlider').value);
+  renderPagination() {
+    const paginationEl = document.getElementById('pagination');
+    paginationEl.innerHTML = '';
     
-    const filteredCourses = coursesData.filter(course => {
-      // Search term filter
-      const matchesSearch = searchInput === '' || 
-        course.title.toLowerCase().includes(searchInput) ||
-        course.instructor.toLowerCase().includes(searchInput) ||
-        course.category.toLowerCase().includes(searchInput);
-      
-      // Category filter
-      const matchesCategory = categoryFilter === 'all' || course.category === categoryFilter;
-      
-      // Level filter
-      const matchesLevel = levelFilter === 'all' || course.level === levelFilter;
-      
-      // Price filter
-      const coursePrice = course.discountPrice || course.price;
-      const matchesPrice = coursePrice <= priceFilter;
-      
-      return matchesSearch && matchesCategory && matchesLevel && matchesPrice;
-    });
+    const totalPages = Math.ceil(this.currentFilteredCourses.length / this.coursesPerPage);
     
-    this.renderCourses(filteredCourses);
+    if (totalPages <= 1) {
+      return;
+    }
+    
+    // Previous button
+    if (this.currentPage > 1) {
+      const prevBtn = document.createElement('button');
+      prevBtn.classList.add('pagination-btn');
+      prevBtn.innerHTML = '&laquo; Previous';
+      prevBtn.addEventListener('click', () => {
+        this.currentPage--;
+        this.renderCourses();
+        this.renderPagination();
+        window.scrollTo(0, 0);
+      });
+      paginationEl.appendChild(prevBtn);
+    }
+    
+    // Page buttons
+    const maxPageButtons = 5;
+    let startPage = Math.max(1, this.currentPage - Math.floor(maxPageButtons / 2));
+    let endPage = Math.min(totalPages, startPage + maxPageButtons - 1);
+    
+    if (endPage - startPage + 1 < maxPageButtons) {
+      startPage = Math.max(1, endPage - maxPageButtons + 1);
+    }
+    
+    for (let i = startPage; i <= endPage; i++) {
+      const pageBtn = document.createElement('button');
+      pageBtn.classList.add('pagination-btn');
+      if (i === this.currentPage) {
+        pageBtn.classList.add('active');
+      }
+      pageBtn.textContent = i;
+      pageBtn.addEventListener('click', () => {
+        this.currentPage = i;
+        this.renderCourses();
+        this.renderPagination();
+        window.scrollTo(0, 0);
+      });
+      paginationEl.appendChild(pageBtn);
+    }
+    
+    // Next button
+    if (this.currentPage < totalPages) {
+      const nextBtn = document.createElement('button');
+      nextBtn.classList.add('pagination-btn');
+      nextBtn.innerHTML = 'Next &raquo;';
+      nextBtn.addEventListener('click', () => {
+        this.currentPage++;
+        this.renderCourses();
+        this.renderPagination();
+        window.scrollTo(0, 0);
+      });
+      paginationEl.appendChild(nextBtn);
+    }
   }
   
   setupEventListeners() {
@@ -235,24 +369,44 @@ class CoursesManager {
     const searchButton = document.querySelector('.search-button');
     const searchInput = document.getElementById('courseSearch');
     
-    searchButton.addEventListener('click', () => this.filterCourses());
+    searchButton.addEventListener('click', () => {
+      this.filters.search = searchInput.value.toLowerCase();
+      this.applyFiltersAndSort();
+    });
+    
     searchInput.addEventListener('keydown', (e) => {
       if (e.key === 'Enter') {
         e.preventDefault();
-        this.filterCourses();
+        this.filters.search = searchInput.value.toLowerCase();
+        this.applyFiltersAndSort();
       }
     });
     
     // Category filters
     const categoryRadios = document.querySelectorAll('input[name="category"]');
     categoryRadios.forEach(radio => {
-      radio.addEventListener('change', () => this.filterCourses());
+      radio.addEventListener('change', () => {
+        this.filters.category = radio.value;
+        this.applyFiltersAndSort();
+      });
     });
     
     // Level filters
     const levelRadios = document.querySelectorAll('input[name="level"]');
     levelRadios.forEach(radio => {
-      radio.addEventListener('change', () => this.filterCourses());
+      radio.addEventListener('change', () => {
+        this.filters.level = radio.value;
+        this.applyFiltersAndSort();
+      });
+    });
+    
+    // Rating filters
+    const ratingRadios = document.querySelectorAll('input[name="rating"]');
+    ratingRadios.forEach(radio => {
+      radio.addEventListener('change', () => {
+        this.filters.rating = parseFloat(radio.value);
+        this.applyFiltersAndSort();
+      });
     });
     
     // Price filter
@@ -263,7 +417,17 @@ class CoursesManager {
       priceOutput.textContent = `$${this.value}`;
     });
     
-    priceSlider.addEventListener('change', () => this.filterCourses());
+    priceSlider.addEventListener('change', () => {
+      this.filters.price = parseInt(priceSlider.value);
+      this.applyFiltersAndSort();
+    });
+    
+    // Sort select
+    const sortSelect = document.getElementById('sortSelect');
+    sortSelect.addEventListener('change', () => {
+      this.sortOption = sortSelect.value;
+      this.applyFiltersAndSort();
+    });
   }
 }
 

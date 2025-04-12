@@ -4,8 +4,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Courses - CourseCart</title>
+  <title>All Courses - CourseCart</title>
   <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="additional-styles.css">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
   <script src="https://unpkg.com/lucide@latest"></script>
 </head>
@@ -45,84 +46,129 @@
         </div>
       </div>
 
-      <div class="courses-layout">
+      <div class="content-wrapper courses-layout">
         <!-- Filters Sidebar -->
-        <div class="courses-filters">
+        <aside class="sidebar courses-filters">
           <div class="filters-container">
             <h2>Filters</h2>
             
-            <div class="filter-group">
-              <h3>Category</h3>
-              <div class="filter-options">
-                <label class="filter-option">
-                  <input type="radio" name="category" value="all" checked>
-                  <span>All Categories</span>
-                </label>
-                <label class="filter-option">
-                  <input type="radio" name="category" value="Web Development">
-                  <span>Web Development</span>
-                </label>
-                <label class="filter-option">
-                  <input type="radio" name="category" value="JavaScript">
-                  <span>JavaScript</span>
-                </label>
-                <label class="filter-option">
-                  <input type="radio" name="category" value="Design">
-                  <span>Design</span>
-                </label>
-                <label class="filter-option">
-                  <input type="radio" name="category" value="Data Science">
-                  <span>Data Science</span>
-                </label>
-              </div>
+            <div class="filter-category filter-group">
+              <h3 class="filter-title">Category</h3>
+              <ul class="filter-options filter-list">
+                <li class="filter-option">
+                  <input type="radio" id="category-all" name="category" value="all" checked data-filter-type="category" data-filter-value="all">
+                  <label for="category-all">All Categories</label>
+                </li>
+                <li class="filter-option">
+                  <input type="radio" id="category-web" name="category" value="Web Development" data-filter-type="category" data-filter-value="Web Development">
+                  <label for="category-web">Web Development</label>
+                </li>
+                <li class="filter-option">
+                  <input type="radio" id="category-js" name="category" value="JavaScript" data-filter-type="category" data-filter-value="JavaScript">
+                  <label for="category-js">JavaScript</label>
+                </li>
+                <li class="filter-option">
+                  <input type="radio" id="category-design" name="category" value="Design" data-filter-type="category" data-filter-value="Design">
+                  <label for="category-design">Design</label>
+                </li>
+                <li class="filter-option">
+                  <input type="radio" id="category-data" name="category" value="Data Science" data-filter-type="category" data-filter-value="Data Science">
+                  <label for="category-data">Data Science</label>
+                </li>
+                <li class="filter-option">
+                  <input type="radio" id="category-mobile" name="category" value="Mobile Development" data-filter-type="category" data-filter-value="Mobile Development">
+                  <label for="category-mobile">Mobile Development</label>
+                </li>
+              </ul>
             </div>
             
-            <div class="filter-group">
-              <h3>Level</h3>
-              <div class="filter-options">
-                <label class="filter-option">
-                  <input type="radio" name="level" value="all" checked>
-                  <span>All Levels</span>
-                </label>
-                <label class="filter-option">
-                  <input type="radio" name="level" value="beginner">
-                  <span>Beginner</span>
-                </label>
-                <label class="filter-option">
-                  <input type="radio" name="level" value="intermediate">
-                  <span>Intermediate</span>
-                </label>
-                <label class="filter-option">
-                  <input type="radio" name="level" value="advanced">
-                  <span>Advanced</span>
-                </label>
-              </div>
+            <div class="filter-category filter-group">
+              <h3 class="filter-title">Level</h3>
+              <ul class="filter-options filter-list">
+                <li class="filter-option">
+                  <input type="radio" id="level-all" name="level" value="all" checked data-filter-type="level" data-filter-value="all">
+                  <label for="level-all">All Levels</label>
+                </li>
+                <li class="filter-option">
+                  <input type="radio" id="level-beginner" name="level" value="beginner" data-filter-type="level" data-filter-value="beginner">
+                  <label for="level-beginner">Beginner</label>
+                </li>
+                <li class="filter-option">
+                  <input type="radio" id="level-intermediate" name="level" value="intermediate" data-filter-type="level" data-filter-value="intermediate">
+                  <label for="level-intermediate">Intermediate</label>
+                </li>
+                <li class="filter-option">
+                  <input type="radio" id="level-advanced" name="level" value="advanced" data-filter-type="level" data-filter-value="advanced">
+                  <label for="level-advanced">Advanced</label>
+                </li>
+              </ul>
             </div>
             
-            <div class="filter-group">
-              <h3>Price Range</h3>
+            <div class="filter-category filter-group">
+              <h3 class="filter-title">Rating</h3>
+              <ul class="filter-options filter-list">
+                <li class="filter-option">
+                  <input type="radio" id="rating-all" name="rating" value="0" checked data-filter-type="rating" data-filter-value="0">
+                  <label for="rating-all">Any Rating</label>
+                </li>
+                <li class="filter-option">
+                  <input type="radio" id="rating-4.5" name="rating" value="4.5" data-filter-type="rating" data-filter-value="4.5">
+                  <label for="rating-4.5">4.5 & Up</label>
+                </li>
+                <li class="filter-option">
+                  <input type="radio" id="rating-4.0" name="rating" value="4" data-filter-type="rating" data-filter-value="4">
+                  <label for="rating-4.0">4.0 & Up</label>
+                </li>
+                <li class="filter-option">
+                  <input type="radio" id="rating-3.5" name="rating" value="3.5" data-filter-type="rating" data-filter-value="3.5">
+                  <label for="rating-3.5">3.5 & Up</label>
+                </li>
+              </ul>
+            </div>
+            
+            <div class="filter-category filter-group">
+              <h3 class="filter-title">Price Range</h3>
               <div class="price-slider">
                 <div class="price-range">
                   <span class="price-min">$0</span>
                   <span class="price-max">$150</span>
                 </div>
-                <input type="range" min="0" max="150" value="150" class="slider" id="priceSlider">
+                <input type="range" min="0" max="150" value="150" class="slider" id="priceSlider" data-filter-type="price">
                 <output for="priceSlider" id="priceOutput">$150</output>
               </div>
             </div>
+
+            <div class="filter-category filter-group">
+              <h3 class="filter-title">Sort By</h3>
+              <select id="sortSelect" class="sort-select">
+                <option value="popularity">Most Popular</option>
+                <option value="newest">Newest</option>
+                <option value="price-low">Price: Low to High</option>
+                <option value="price-high">Price: High to Low</option>
+                <option value="rating">Highest Rated</option>
+              </select>
+            </div>
           </div>
-        </div>
+        </aside>
         
         <!-- Courses Grid -->
-        <div class="courses-grid">
+        <section class="courses-grid">
           <div class="courses-result-info">
-            <p id="coursesCount">Showing 4 courses</p>
+            <p id="coursesCount">Showing 0 courses</p>
           </div>
           
           <div class="courses-list" id="coursesList">
             <!-- Courses will be added here dynamically -->
+            <div class="loading-container">
+              <div class="loading"></div>
+            </div>
           </div>
-        </div>
+
+          <!-- Pagination -->
+          <div class="pagination" id="pagination">
+            <!-- Pagination buttons will be added dynamically -->
+          </div>
+        </section>
       </div>
     </div>
   </main>
@@ -136,11 +182,11 @@
   </footer>
 
   <template id="courseCardTemplate">
-    <div class="course-card">
+    <article class="course-card">
       <div class="course-card-image">
         <img src="" alt="">
         <div class="course-card-overlay">
-          <a href="#" class="btn btn-secondary view-course-btn">View Course</a>
+          <a href="#" class="btn btn-secondary view-course-btn">View Details</a>
         </div>
         <span class="course-category"></span>
       </div>
@@ -152,7 +198,7 @@
           </div>
           <div class="course-duration">
             <i data-lucide="clock" class="duration-icon"></i>
-            <span>10 hours</span>
+            <span></span>
           </div>
         </div>
         <h3 class="course-title"></h3>
@@ -169,13 +215,15 @@
           </button>
         </div>
       </div>
-    </div>
+    </article>
   </template>
 
   <script src="courses.js"></script>
   <script>
     // Initialize Lucide icons
-    lucide.createIcons();
+    document.addEventListener('DOMContentLoaded', function() {
+      lucide.createIcons();
+    });
   </script>
 </body>
 </html>
